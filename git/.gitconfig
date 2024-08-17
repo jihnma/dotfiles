@@ -1,0 +1,16 @@
+[init]
+    defaultBranch = main
+
+[push]
+    default = matching
+
+[core]
+    editor = hx
+	
+[alias]
+    ss = status -s
+    pp = push
+    lo = log --oneline
+    sw = switch -c
+    co = commit
+    wp = !git add --all && git commit -m "wip"
