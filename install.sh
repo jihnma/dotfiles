@@ -34,13 +34,20 @@ link_stow() {
   git restore .
 }
 
+packages=(
+  "brew/brewlist brew install"
+  "brew/brewcasklist brew install -q --cask"
+)
+
 echo ""
 echo "Starting Dotfiles Installation"
 
 install_homebrew
 clone_repository
-install_homebrew_packages "brew/brewlist" "brew install"
-install_homebrew_packages "brew/brewcasklist" "brew install -q --cask"
+
+for package in "${packages[@]}"; do
+  install_homebrew_packages $package
+done
 
 link_stow
 
