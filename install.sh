@@ -44,11 +44,6 @@ link_stow() {
   git restore .
 }
 
-packages=(
-  "brew/brewlist brew install"
-  "brew/brewcasklist brew install -q --cask"
-)
-
 echo ""
 echo "Starting Dotfiles Installation"
 
