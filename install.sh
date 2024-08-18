@@ -28,6 +28,13 @@ install_homebrew_packages() {
   comm -23 <(sort "$list_file") <(brew list -1 | sort) | xargs -L1 $install_cmd
 }
 
+link_stow() {
+  cd "$dotfiles_dir"
+
+  cat stowlist | xargs -L1 stow --adopt
+  git restore .
+}
+
 echo ""
 echo "Starting Dotfiles Installation"
 
@@ -35,6 +42,8 @@ install_homebrew
 clone_repository
 install_homebrew_packages "brew/brewlist" "brew install"
 install_homebrew_packages "brew/brewcasklist" "brew install -q --cask"
+
+link_stow
 
 echo "Dotfiles Installation Complete"
 echo ""
