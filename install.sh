@@ -45,6 +45,16 @@ link_stow() {
   git restore .
 }
 
+copy_gitconfig_local() {
+  cd "$dotfiles_dir"
+
+  local target_file="$HOME/.gitconfig.local"
+  
+  if [ ! -f "$target_file" ]; then
+    cp git.local/.gitconfig.local "$target_file"
+  fi
+}
+
 echo ""
 echo "Starting Dotfiles Installation"
 
@@ -52,6 +62,7 @@ install_homebrew
 clone_repository
 install_homebrew_packages
 link_stow
+copy_gitconfig_local
 
 echo "Dotfiles Installation Complete"
 echo ""
