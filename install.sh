@@ -20,10 +20,10 @@ install_homebrew() {
 
 check_uninstalled_packages() {
   local list_file=$1
+
   comm -23 <(sort "$list_file") <(brew list -1 | sort)
 }
 
-# パッケージをインストールする関数
 install_homebrew_packages() {
   packages=(
     "brew/brewlist brew install"
