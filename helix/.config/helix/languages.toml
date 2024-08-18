@@ -1,0 +1,22 @@
+[language-server]
+biome = { command = "biome", args = ["lsp-proxy"] }
+
+[[language]]
+name = "typescript"
+file-types = ["ts", "js"]
+language-servers = [ { name = "typescript-language-server", except-features = [ "format" ] }, "biome"]
+formatter = { command = "biome", args = ["format", "--stdin-file-path", "a.ts"] }
+auto-format = true
+
+[[language]]
+name = "tsx"
+file-types = ["tsx", "jsx"]
+language-servers = [ { name = "typescript-language-server", except-features = [ "format" ] }, "biome"]
+formatter = { command = "biome", args = ["format", "--stdin-file-path", "a.tsx"] }
+auto-format = true
+
+[[language]]
+name = "json"
+language-servers = [ { name = "vscode-json-language-server", except-features = [ "format" ] }, "biome" ]
+formatter = { command = "biome", args = ["format", "--stdin-file-path", "a.json"] }
+auto-format = true
