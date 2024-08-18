@@ -36,7 +36,6 @@ install_homebrew_packages() {
   done
 }
 
-
 link_stow() {
   cd "$dotfiles_dir"
 
