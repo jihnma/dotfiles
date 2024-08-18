@@ -9,7 +9,8 @@
 
 [core]
     editor = hx
-	
+    excludesfile = ~/.gitconfig.ignore
+
 [alias]
     ss = status -s
     pp = push
