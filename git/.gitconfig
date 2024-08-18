@@ -18,3 +18,6 @@
     sw = switch -c
     co = commit
     wp = !git add --all && git commit -m "wip"
+
+[commit]
+    gpgsign = true
