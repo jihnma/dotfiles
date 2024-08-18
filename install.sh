@@ -25,6 +25,8 @@ check_uninstalled_packages() {
 }
 
 install_homebrew_packages() {
+  cd "$dotfiles_dir"
+
   packages=(
     "brew/brewlist brew install"
     "brew/brewcasklist brew install -q --cask"
