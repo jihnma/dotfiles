@@ -18,14 +18,24 @@ install_homebrew() {
   fi
 }
 
-install_homebrew_packages() {
-  cd "$dotfiles_dir"
-
+check_uninstalled_packages() {
   local list_file=$1
-  local install_cmd=$2
-
-  comm -23 <(sort "$list_file") <(brew list -1 | sort) | xargs -L1 $install_cmd
+  comm -23 <(sort "$list_file") <(brew list -1 | sort)
 }
+
+# パッケージをインストールする関数
+install_homebrew_packages() {
+  packages=(
+    "brew/brewlist brew install"
+    "brew/brewcasklist brew install -q --cask"
+  )
+
+  for package in "${packages[@]}"; do
+    read -r list_file install_cmd <<< "$package"
+    check_uninstalled_packages "$list_file" | xargs -L1 $install_cmd
+  done
+}
+
 
 link_stow() {
   cd "$dotfiles_dir"
@@ -44,11 +54,7 @@ echo "Starting Dotfiles Installation"
 
 install_homebrew
 clone_repository
-
-for package in "${packages[@]}"; do
-  install_homebrew_packages $package
-done
-
+install_homebrew_packages
 link_stow
 
 echo "Dotfiles Installation Complete"
