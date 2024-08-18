@@ -7,8 +7,7 @@ clone_repository() {
   if [ ! -d "$dotfiles_dir" ]; then
     git clone --depth 1 -q "$dotfiles_repository" "$dotfiles_dir"
   else
-    cd "$dotfiles_dir"
-    git pull --quiet --rebase origin main || exit 1
+    git -C "$dotfiles_dir" pull --quiet --rebase origin main || exit 1
   fi
 }
 
