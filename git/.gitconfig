@@ -21,3 +21,6 @@
 
 [commit]
     gpgsign = true
+
+[gpg]
+    format = ssh
