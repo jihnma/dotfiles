@@ -14,17 +14,17 @@ hide_when_typing = true
 draw_bold_text_with_bright_colors = true
 
 [font]
-size = 14
+size = 16
 
 [font.normal]
-family = "CommitMono Nerd Font"
+family = "0xProto Nerd Font"
 
 [font.bold]
-family = "CommitMono Nerd Font"
+family = "0xProto Nerd Font"
 style = "Bold"
 
 [font.italic]
-family = "CommitMono Nerd Font"
+family = "0xProto Nerd Font"
 style = "Italic"
 
 [font.offset]
