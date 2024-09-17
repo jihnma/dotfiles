@@ -55,6 +55,10 @@ copy_gitconfig_local() {
   fi
 }
 
+download_alacritty_theme() {
+  curl -LO --output-dir ~/.config/alacritty https://github.com/catppuccin/alacritty/raw/main/catppuccin-macchiato.toml
+}
+
 echo ""
 echo "Starting Dotfiles Installation"
 
@@ -62,6 +66,7 @@ install_homebrew
 clone_repository
 install_homebrew_packages
 link_stow
+download_alacritty_theme
 copy_gitconfig_local
 
 echo "Dotfiles Installation Complete"
