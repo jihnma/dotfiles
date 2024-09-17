@@ -1,3 +1,7 @@
+import = [
+  "~/.config/alacritty/catppuccin-macchiato.toml"
+]
+
 live_config_reload = true
 
 [env]
