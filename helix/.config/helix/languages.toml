@@ -1,5 +1,7 @@
-[language-server]
-biome = { command = "biome", args = ["lsp-proxy"] }
+# JavaScript
+[language-server.biome]
+command = "biome"
+args = ["lsp-proxy"]
 
 [[language]]
 name = "typescript"
@@ -15,6 +17,22 @@ language-servers = [ { name = "typescript-language-server", except-features = [ 
 formatter = { command = "biome", args = ["format", "--stdin-file-path", "a.tsx"] }
 auto-format = true
 
+# Python
+[language-server.ruff]
+command = "ruff"
+args = ["server"]
+
+[language-server.pyright.config.python.analysis]
+typeCheckingMode = "basic"
+
+[[language]]
+name = "python"
+language-servers = [ "pyright", "ruff" ]
+# language-servers = [ "ruff" ]
+auto-format = true
+
+
+# JSON
 [[language]]
 name = "json"
 language-servers = [ { name = "vscode-json-language-server", except-features = [ "format" ] }, "biome" ]
