@@ -14,6 +14,9 @@ duration = 0
 [mouse]
 hide_when_typing = true
 
+[cursor]
+style = { shape = "Underline", blinking = "Always" }
+
 [colors]
 draw_bold_text_with_bright_colors = true
 
