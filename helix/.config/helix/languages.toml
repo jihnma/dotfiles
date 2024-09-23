@@ -1,4 +1,4 @@
-# JavaScript
+# JavaScript, TypeScript
 [language-server.biome]
 command = "biome"
 args = ["lsp-proxy"]
@@ -16,6 +16,7 @@ file-types = ["tsx", "jsx"]
 language-servers = [ { name = "typescript-language-server", except-features = [ "format" ] }, "biome"]
 formatter = { command = "biome", args = ["format", "--stdin-file-path", "a.tsx"] }
 auto-format = true
+
 
 # Python
 [language-server.ruff]
