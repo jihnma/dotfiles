@@ -1,73 +1,104 @@
-#!/bin/bash
+#!/usr/bin/env zsh
 
-dotfiles_dir="$HOME/.files"
-dotfiles_repository="https://github.com/jihnma/dotfiles.git"
+[ "${SHELL##/*/}" != "zsh" ] && echo "You might need to change default shell to zsh: `chsh -s /bin/zsh`"
 
-clone_repository() {
-  if [ ! -d "$dotfiles_dir" ]; then
-    git clone --depth 1 -q "$dotfiles_repository" "$dotfiles_dir"
-  else
-    git -C "$dotfiles_dir" pull --quiet --rebase origin main || exit 1
-  fi
+function message() { 
+  echo -e "\e[36m$1\e[m\n"
 }
 
-install_homebrew() {
-  if ! command -v brew &>/dev/null; then
+function clone_repository() {
+  local repository_url="https://github.com/$1.git"
+  git clone --depth 1 -q $repository_url
+}
+
+function add_symbolic_links() {
+  cat .list_stow | xargs -L1 stow --adopt
+  git restore .
+}
+
+function install_homebrew() {
+  if ! command -v brew &>/dev/null 2>&1; then
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     eval "$(/opt/homebrew/bin/brew shellenv)"
   fi
 }
 
-check_uninstalled_packages() {
-  local list_file=$1
+function install_homebrew_formulae() {
+  local formulae=$1
+  local options=$2
 
-  comm -23 <(sort "$list_file") <(brew list -1 | sort)
-}
-
-install_homebrew_packages() {
-  cd "$dotfiles_dir"
-
-  packages=(
-    "brew/brewlist brew install"
-    "brew/brewcasklist brew install -q --cask"
-  )
-
-  for package in "${packages[@]}"; do
-    read -r list_file install_cmd <<< "$package"
-    check_uninstalled_packages "$list_file" | xargs -L1 $install_cmd
+  for formula in "${formulae[@]}"; do
+    check_installed_formula "$formula" | xargs -L1 brew install $options
   done
+
 }
 
-link_stow() {
-  cd "$dotfiles_dir"
-
-  cat stowlist | xargs -L1 stow --adopt
-  git restore .
+function check_installed_formula() {
+  local formula=$1
+  comm -23 <(sort "$formula") <(brew list -1 | sort)
 }
 
-copy_gitconfig_local() {
-  cd "$dotfiles_dir"
+function install_rust() {
+  if ! command -v rustup >/dev/null 2>&1; then
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+    source "$HOME/.cargo/env"
 
-  local target_file="$HOME/.gitconfig.local"
-  
-  if [ ! -f "$target_file" ]; then
-    cp git.local/.gitconfig.local "$target_file"
+    rustup self update
+    rustup update
   fi
 }
 
-download_alacritty_theme() {
-  curl -LO --output-dir ~/.config/alacritty https://github.com/catppuccin/alacritty/raw/main/catppuccin-macchiato.toml
+function uninstall_rust() {
+  if ! command -v rustup >/dev/null 2>&1; then
+    rustup self uninstall
+  fi
 }
 
-echo ""
-echo "Starting Dotfiles Installation"
+function download_alacritty_theme() {
+  local dest_file="$HOME/.config/alacritty/catppuccin-macchiato.toml"
 
-install_homebrew
-clone_repository
-install_homebrew_packages
-link_stow
-download_alacritty_theme
-copy_gitconfig_local
+  if [ ! -f "$dest_file" ]; then
+    curl -LO --output-dir ~/.config/alacritty https://github.com/catppuccin/alacritty/raw/main/catppuccin-macchiato.toml
+  fi
+}
 
-echo "Dotfiles Installation Complete"
-echo ""
+function copy_gitconfig_local() {
+  local dest_file="$HOME/.gitconfig.local"
+
+  if [ ! -f "$dest_file" ]; then
+    cp git/.gitconfig.local $dest_file
+  fi
+}
+
+function main() {
+  local dotfiles_dir=$HOME/dotfiles
+
+  #
+  clone_repository "jihnma/dotfiles"
+
+  cd $dotfiles_dir
+  
+  #
+  add_symbolic_links
+
+  #
+  install_homebrew
+
+  #
+  install_homebrew_formulae .list_brew
+  install_homebrew_formulae .list_brewcask --cask
+
+  #
+  install_rust
+
+  #
+  download_alacritty_theme
+
+  #
+  copy_gitconfig_local
+  
+  # https://github.com/alacritty/alacritty/issues/4673#issuecomment-771291615
+  xattr -rd com.apple.quarantine /Applications/Alacritty.app
+}
+
+main
