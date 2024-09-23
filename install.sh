@@ -8,7 +8,11 @@ function message() {
 
 function clone_repository() {
   local repository_url="https://github.com/$1.git"
-  git clone --depth 1 -q $repository_url
+  local dest=$2
+
+  if [ ! -d "$dest" ]; then
+    git clone --depth 1 -q $repository_url $dest
+  fi
 }
 
 function add_symbolic_links() {
@@ -74,7 +78,7 @@ function main() {
   local dotfiles_dir=$HOME/dotfiles
 
   #
-  clone_repository "jihnma/dotfiles"
+  clone_repository "jihnma/dotfiles" "$dotfiles_dir"
 
   cd $dotfiles_dir
   
@@ -93,6 +97,9 @@ function main() {
 
   #
   download_alacritty_theme
+
+  #
+  clone_repository "tmux-plugins/tpm" "$HOME/.tmux/plugins/tpm"
 
   #
   copy_gitconfig_local
