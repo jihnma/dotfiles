@@ -1,19 +1,10 @@
 # Dotfiles
 
-This repository contains my personal configuration files for setting up a development environment.
-
-## Installation
-
-To install the dotfiles, run the following command in your terminal:
+My OSX dotfiles.
 
 ```sh
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/jihnma/dotfiles/HEAD/install.sh)"
+curl -L https://raw.githubusercontent.com/jihnma/dotfiles/HEAD/install.sh | sh
 ```
 
-## Uninstallation
-
-If you wish to remove the dotfiles and revert the changes, run the following command:
-
-```sh
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/jihnma/dotfiles/HEAD/uninstall.sh)"
-```
+> [!CAUTION]
+> **DO NOT** run the setup script if you do not fully understand [what it does](install.sh).
