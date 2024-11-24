@@ -1,24 +1,9 @@
 #!/usr/bin/env zsh
 
-[ "${SHELL##/*/}" != "zsh" ] && echo "You might need to change default shell to zsh: `chsh -s /bin/zsh`"
-
-function message() { 
-  echo -e "\e[36m$1\e[m\n"
-}
-
-function clone_repository() {
-  local repository_url="https://github.com/$1.git"
-  local dest=$2
-
-  if [ ! -d "$dest" ]; then
-    git clone --depth 1 -q $repository_url $dest
-  fi
-}
-
-function add_symbolic_links() {
-  cat .list_stow | xargs -L1 stow --adopt
-  git restore .
-}
+if [ "${SHELL##/*/}" != "zsh" ]; then
+  echo "Error: You might need to change default shell to zsh: chsh -s /bin/zsh"
+  exit 1
+fi
 
 function install_homebrew() {
   if ! command -v brew &>/dev/null 2>&1; then
@@ -27,19 +12,32 @@ function install_homebrew() {
   fi
 }
 
-function install_homebrew_formulae() {
-  local formulae=$1
-  local options=$2
-
-  for formula in "${formulae[@]}"; do
-    check_installed_formula "$formula" | xargs -L1 brew install $options
-  done
-
+function add_symbolic_links() {
+  cat .list_stow | xargs -L1 stow --adopt
+  # git restore .
 }
 
-function check_installed_formula() {
-  local formula=$1
-  comm -23 <(sort "$formula") <(brew list -1 | sort)
+function install_homebrew_formulae() {
+  local brew_file=$1
+  local cask_file=$2
+
+  # Get list of installed packages in advance
+  local installed_formulae=($(brew list --formula))
+  local installed_casks=($(brew list --cask))
+
+  # Install regular packages
+  while IFS= read -r formula; do
+    if [[ ! " ${installed_formulae[@]} " =~ " ${formula} " ]]; then
+      brew install "$formula"
+    fi
+  done < "$brew_file"
+
+  # Install cask packages
+  while IFS= read -r formula; do
+    if [[ ! " ${installed_casks[@]} " =~ " ${formula} " ]]; then
+      brew install --cask "$formula"
+    fi
+  done < "$cask_file"
 }
 
 function install_rust() {
@@ -52,60 +50,91 @@ function install_rust() {
   fi
 }
 
-function uninstall_rust() {
-  if ! command -v rustup >/dev/null 2>&1; then
-    rustup self uninstall
-  fi
+# Define constants at the beginning of the script
+readonly SPINNER=('⣾' '⣽' '⣻' '⢿' '⡿' '⣟' '⣯' '⣷')
+
+# Initialize screen buffer
+setup_screen() {
+    printf "\033[2J\033[H"  # Clear screen and move cursor home
+    printf "╭──────────────────────────────────╮\n"
+    printf "│                                  │\n"
+    printf "│  ○ Dotfiles installation         │\n"
+    printf "│                                  │\n"
+    printf "│                                  │\n"
+    printf "╰──────────────────────────────────╯\n"
 }
 
-function download_alacritty_theme() {
-  local dest_file="$HOME/.config/alacritty/catppuccin-macchiato.toml"
-
-  if [ ! -f "$dest_file" ]; then
-    curl -LO --output-dir ~/.config/alacritty https://github.com/catppuccin/alacritty/raw/main/catppuccin-macchiato.toml
-  fi
+cleanup() {
+    # Clear current line
+    printf "\033[2K"
+    
+    # Show cursor
+    printf "\033[?25h"
+    
+    # Display final state cleanly
+    printf "\033[4;1H│  ■ Installation interrupted!     │"
+    printf "\033[7;1H"  # Move below the box
+    printf "Installation was interrupted.\n"
+    exit 1
 }
 
-function copy_gitconfig_local() {
-  local dest_file="$HOME/.gitconfig.local"
+update_status() {
+    local message=$1
+    local command=$2
+    local args=("${@:3}")
+    local i=0
 
-  if [ ! -f "$dest_file" ]; then
-    cp git/.gitconfig.local $dest_file
-  fi
+    # Hide cursor
+    printf "\033[?25l"
+
+    # Execute command in background
+    $command "${args[@]}" &
+    local pid=$!
+
+    while kill -0 $pid 2>/dev/null; do
+        # Update spinner and message at once
+        printf "\033[4;1H│  %s %s%-$((26-${#message}))s " "${SPINNER[$i]}" "$message" " "
+        
+        (( i = (i + 1) % 8 ))
+        sleep 0.1
+    done
+
+    wait $pid
+
+    # Final display
+    printf "\033[4;1H│   %-28s" "$message"
+
+    # Show cursor again
+    printf "\033[?25h"
 }
 
-function main() {
+main() {
   local dotfiles_dir=$HOME/dotfiles
-
-  #
-  clone_repository "jihnma/dotfiles" "$dotfiles_dir"
-
   cd $dotfiles_dir
+
+  # Suppress output during interruption
+  stty -echoctl
   
-  #
-  add_symbolic_links
-
-  #
-  install_homebrew
-
-  #
-  install_homebrew_formulae .list_brew
-  install_homebrew_formulae .list_brewcask --cask
-
-  #
-  install_rust
-
-  #
-  download_alacritty_theme
-
-  #
-  clone_repository "tmux-plugins/tpm" "$HOME/.tmux/plugins/tpm"
-
-  #
-  copy_gitconfig_local
+  setup_screen
   
-  # https://github.com/alacritty/alacritty/issues/4673#issuecomment-771291615
-  xattr -rd com.apple.quarantine /Applications/Alacritty.app
+  # Handle both Ctrl+C and normal exit
+    trap cleanup INT
+    trap 'stty echoctl; printf "\033[?25h"' EXIT
+
+    # Installation steps
+    update_status "Initializing..." sleep 1
+    update_status "Checking for conflicts..." sleep 1
+    update_status "Homebrew..." install_homebrew
+    update_status "Homebrew formulae..." install_homebrew_formulae ".list_brew" ".list_brewcask"
+    update_status "Installing Rust..." install_rust
+    update_status "Creating symlinks..." add_symbolic_links
+
+    update_status "Installing dotfiles..." sleep 1
+    
+    # Completion message
+    printf "\033[4;1H│  ● Installation completed!"
+    printf "\033[7;1H"  # Move below the box
+    printf "Dotfiles have been successfully installed.\n"
 }
 
 main
