@@ -108,13 +108,40 @@ update_status() {
     local args=("${@:3}")
 
     if [ -t 1 ] && [ -t 2 ]; then
+        # Hide cursor
+        printf "\033[?25l"
         printf "\033[4;1H│  ⋯ %-28s" "$message"
-        $command "${args[@]}"
+        
+        # Execute in background
+        $command "${args[@]}" &
+        local pid=$!
+        
+        # Save original INT handler
+        trap 'kill $pid 2>/dev/null; cleanup; printf "Installation was interrupted.\n"; exit 1' INT
+        
+        # Spinner animation
+        local i=0
+        while kill -0 $pid 2>/dev/null; do
+            printf "\033[4;1H│  ${SPINNER[i]} %-28s" "$message"
+            i=$(( (i + 1) % 8 ))
+            sleep 0.1
+        done
+        
+        # Restore original INT handler
+        trap cleanup INT
+        
+        # Check result
+        wait $pid
         local result=$?
-        if [ $result -ne 0 ]; then
-            cleanup
-            printf "Installation was interrupted.\n"
-            exit 1
+        
+        # Show cursor
+        printf "\033[?25h"
+        
+        if [ $result -eq 0 ]; then
+            printf "\033[4;1H│  ✓ %-28s" "$message"
+        else
+            # Execute original process on error (cleanup is called by caller)
+            return $result
         fi
     else
         $command "${args[@]}" || {
@@ -150,18 +177,18 @@ main() {
   fi
 
   # Installation steps
-  update_status "Initializing..." clone_repository
+  update_status "Initializing..." clone_repository || exit 1  # Exit on error
 
   local dotfiles_dir=$HOME/dotfiles
-  cd $dotfiles_dir
+  cd $dotfiles_dir || exit 1
 
-  update_status "Checking for conflicts..." sleep 1
-  update_status "Homebrew..." install_homebrew
-  update_status "Homebrew formulae..." install_homebrew_formulae ".list_brew" ".list_brewcask"
-  update_status "Installing Rust..." install_rust
-  update_status "Creating symlinks..." add_symbolic_links
+  update_status "Checking for conflicts..." sleep 1 || exit 1
+  update_status "Homebrew..." install_homebrew || exit 1
+  update_status "Homebrew formulae..." install_homebrew_formulae ".list_brew" ".list_brewcask" || exit 1
+  update_status "Installing Rust..." install_rust || exit 1
+  update_status "Creating symlinks..." add_symbolic_links || exit 1
 
-  update_status "Installing dotfiles..." sleep 1
+  update_status "Installing dotfiles..." sleep 1 || exit 1
 
   # Display completion message
   if [ -t 1 ] && [ -t 2 ]; then
