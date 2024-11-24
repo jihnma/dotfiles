@@ -5,6 +5,30 @@ if [ "${SHELL##/*/}" != "zsh" ]; then
   exit 1
 fi
 
+function clone_repository() {
+  local repo_url="https://github.com/jihnma/dotfiles.git"
+  local target_dir="$HOME/dotfiles"
+
+  if [ -d "$target_dir" ]; then
+    if [ -d "$target_dir/.git" ]; then
+      local current_remote
+      current_remote=$(cd "$target_dir" && git remote get-url origin 2>/dev/null)
+      
+      if [ "$current_remote" = "$repo_url" ]; then
+        return 0
+      else
+        cleanup
+        printf "Error: Different repository exists at $target_dir\n"
+        printf "Expected: $repo_url\n"
+        printf "Found: $current_remote\n"
+        exit 1
+      fi
+    fi
+  fi
+
+  git clone "$repo_url" "$target_dir" >/dev/null 2>&1
+}
+
 function install_homebrew() {
   if ! command -v brew &>/dev/null 2>&1; then
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -50,10 +74,10 @@ function install_rust() {
   fi
 }
 
-# Define constants at the beginning of the script
+# Define spinner animation characters
 readonly SPINNER=('⣾' '⣽' '⣻' '⢿' '⡿' '⣟' '⣯' '⣷')
 
-# Initialize screen buffer
+# Initialize screen buffer with installation UI
 setup_screen() {
     printf "\033[2J\033[H"  # Clear screen and move cursor home
     printf "╭──────────────────────────────────╮\n"
@@ -64,7 +88,7 @@ setup_screen() {
     printf "╰──────────────────────────────────╯\n"
 }
 
-cleanup() {
+function cleanup() {
     # Clear current line
     printf "\033[2K"
     
@@ -73,45 +97,34 @@ cleanup() {
     
     # Display final state cleanly
     printf "\033[4;1H│  ■ Installation interrupted!     │"
-    printf "\033[7;1H"  # Move below the box
-    printf "Installation was interrupted.\n"
-    exit 1
+    printf "\033[5;1H│                                  │"
+    printf "\033[6;1H╰──────────────────────────────────╯"
+    printf "\033[7;1H"
 }
 
 update_status() {
     local message=$1
     local command=$2
     local args=("${@:3}")
-    local i=0
 
-    # Hide cursor
-    printf "\033[?25l"
-
-    # Execute command in background
-    $command "${args[@]}" &
-    local pid=$!
-
-    while kill -0 $pid 2>/dev/null; do
-        # Update spinner and message at once
-        printf "\033[4;1H│  %s %s%-$((26-${#message}))s " "${SPINNER[$i]}" "$message" " "
-        
-        (( i = (i + 1) % 8 ))
-        sleep 0.1
-    done
-
-    wait $pid
-
-    # Final display
-    printf "\033[4;1H│   %-28s" "$message"
-
-    # Show cursor again
-    printf "\033[?25h"
+    if [ -t 1 ] && [ -t 2 ]; then
+        printf "\033[4;1H│  ⋯ %-28s" "$message"
+        $command "${args[@]}"
+        local result=$?
+        if [ $result -ne 0 ]; then
+            cleanup
+            printf "Installation was interrupted.\n"
+            exit 1
+        fi
+    else
+        $command "${args[@]}" || {
+            echo "Installation was interrupted."
+            exit 1
+        }
+    fi
 }
 
 main() {
-  local dotfiles_dir=$HOME/dotfiles
-  cd $dotfiles_dir
-
   # Suppress output during interruption
   stty -echoctl
   
@@ -137,7 +150,11 @@ main() {
   fi
 
   # Installation steps
-  update_status "Initializing..." sleep 1
+  update_status "Initializing..." clone_repository
+
+  local dotfiles_dir=$HOME/dotfiles
+  cd $dotfiles_dir
+
   update_status "Checking for conflicts..." sleep 1
   update_status "Homebrew..." install_homebrew
   update_status "Homebrew formulae..." install_homebrew_formulae ".list_brew" ".list_brewcask"
@@ -146,7 +163,7 @@ main() {
 
   update_status "Installing dotfiles..." sleep 1
 
-  # Simplify completion message
+  # Display completion message
   if [ -t 1 ] && [ -t 2 ]; then
     printf "\033[4;1H│  ● Installation completed!"
     printf "\033[7;1H"
