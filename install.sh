@@ -113,7 +113,12 @@ main() {
   cd $dotfiles_dir
 
   # Suppress output during interruption
-  stty -echoctl
+  if [ -t 0 ]; then
+    stty -echoctl
+    trap 'stty echoctl; printf "\033[?25h"' EXIT
+  else
+    trap 'printf "\033[?25h"' EXIT
+  fi
   
   setup_screen
   
