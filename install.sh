@@ -52,14 +52,14 @@ function install_homebrew_formulae() {
   # Install regular packages
   while IFS= read -r formula; do
     if [[ ! " ${installed_formulae[@]} " =~ " ${formula} " ]]; then
-      brew install "$formula"
+      brew install "$formula" >/dev/null 2>&1
     fi
   done < "$brew_file"
 
   # Install cask packages
   while IFS= read -r formula; do
     if [[ ! " ${installed_casks[@]} " =~ " ${formula} " ]]; then
-      brew install --cask "$formula"
+      brew install --cask "$formula" >/dev/null 2>&1
     fi
   done < "$cask_file"
 }
