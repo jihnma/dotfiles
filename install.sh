@@ -116,25 +116,42 @@ main() {
   stty -echoctl
   
   setup_screen
-  
-  # Handle both Ctrl+C and normal exit
+
+  # Check if running in terminal
+  if [ -t 1 ] && [ -t 2 ]; then
+    # Only handle stty and cursor settings in terminal
+    stty -echoctl
     trap cleanup INT
-    trap 'stty echoctl; printf "\033[?25h"' EXIT
+    trap 'stty echoctl 2>/dev/null; printf "\033[?25h" 2>/dev/null' EXIT
+  else
+    # Use simplified output for pipes or redirections
+    trap cleanup INT
+    setup_screen() { :; }  # Ignore screen setup
+    update_status() {
+      local message=$1
+      local command=$2
+      local args=("${@:3}")
+      echo "Installing: $message"
+      $command "${args[@]}"
+    }
+  fi
 
-    # Installation steps
-    update_status "Initializing..." sleep 1
-    update_status "Checking for conflicts..." sleep 1
-    update_status "Homebrew..." install_homebrew
-    update_status "Homebrew formulae..." install_homebrew_formulae ".list_brew" ".list_brewcask"
-    update_status "Installing Rust..." install_rust
-    update_status "Creating symlinks..." add_symbolic_links
+  # Installation steps
+  update_status "Initializing..." sleep 1
+  update_status "Checking for conflicts..." sleep 1
+  update_status "Homebrew..." install_homebrew
+  update_status "Homebrew formulae..." install_homebrew_formulae ".list_brew" ".list_brewcask"
+  update_status "Installing Rust..." install_rust
+  update_status "Creating symlinks..." add_symbolic_links
 
-    update_status "Installing dotfiles..." sleep 1
-    
-    # Completion message
+  update_status "Installing dotfiles..." sleep 1
+
+  # Simplify completion message
+  if [ -t 1 ] && [ -t 2 ]; then
     printf "\033[4;1H│  ● Installation completed!"
-    printf "\033[7;1H"  # Move below the box
-    printf "Dotfiles have been successfully installed.\n"
+    printf "\033[7;1H"
+  fi
+  echo "Dotfiles have been successfully installed."
 }
 
 main
