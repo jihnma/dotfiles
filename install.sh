@@ -161,7 +161,7 @@ main() {
   # Check if running in terminal
   if [ -t 1 ] && [ -t 2 ]; then
     # Only handle stty and cursor settings in terminal
-    stty -echoctl
+    # stty -echoctl
     trap cleanup INT
     trap 'stty echoctl 2>/dev/null; printf "\033[?25h" 2>/dev/null' EXIT
   else
