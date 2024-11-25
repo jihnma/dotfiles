@@ -163,7 +163,7 @@ main() {
     # Only handle stty and cursor settings in terminal
     # stty -echoctl
     trap cleanup INT
-    trap 'stty echoctl 2>/dev/null; printf "\033[?25h" 2>/dev/null' EXIT
+    trap 'printf "\033[?25h" 2>/dev/null' EXIT
   else
     # Use simplified output for pipes or redirections
     trap cleanup INT
