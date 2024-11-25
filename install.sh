@@ -188,6 +188,8 @@ main() {
   update_status "Installing Rust..." install_rust || exit 1
   update_status "Creating symlinks..." add_symbolic_links || exit 1
 
+  mise trust ~/.config/mise/config.toml -q
+
   update_status "Installing dotfiles..." sleep 1 || exit 1
 
   # Display completion message
