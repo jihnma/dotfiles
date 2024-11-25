@@ -152,9 +152,9 @@ update_status() {
 }
 
 main() {
-  if [ -t 0 ]; then
-    stty -echoctl
-  fi
+  # if [ -t 0 ]; then
+  #   stty -echoctl
+  # fi
   
   setup_screen
 
