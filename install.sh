@@ -152,8 +152,9 @@ update_status() {
 }
 
 main() {
-  # Suppress output during interruption
-  stty -echoctl
+  if [ -t 0 ]; then
+    stty -echoctl
+  fi
   
   setup_screen
 
