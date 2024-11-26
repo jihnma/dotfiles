@@ -5,200 +5,180 @@ if [ "${SHELL##/*/}" != "zsh" ]; then
   exit 1
 fi
 
-function clone_repository() {
-  local repo_url="https://github.com/jihnma/dotfiles.git"
-  local target_dir="$HOME/dotfiles"
+REPO="https://github.com/jihnma/dotfiles.git"
+DOTFILES="$HOME/dotfiles"
+SPINNER=('⣾' '⣽' '⣻' '⢿' '⡿' '⣟' '⣯' '⣷')
 
-  if [ -d "$target_dir" ]; then
-    if [ -d "$target_dir/.git" ]; then
-      local current_remote
-      current_remote=$(cd "$target_dir" && git remote get-url origin 2>/dev/null)
-      
-      if [ "$current_remote" = "$repo_url" ]; then
-        return 0
-      else
-        cleanup
-        printf "Error: Different repository exists at $target_dir\n"
-        printf "Expected: $repo_url\n"
-        printf "Found: $current_remote\n"
-        exit 1
-      fi
+install_homebrew() {
+    if ! command -v brew &>/dev/null; then
+        export NONINTERACTIVE=1
+        curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh | sh || {
+            echo "Error: Homebrew installation failed"
+            return 1
+        }
+        
+        if [ -f "/opt/homebrew/bin/brew" ]; then
+            eval "$(/opt/homebrew/bin/brew shellenv)"
+        else
+            echo "Error: brew command not found after installation"
+            return 1
+        fi
     fi
-  fi
-
-  git clone "$repo_url" "$target_dir" >/dev/null 2>&1
 }
 
-function install_homebrew() {
-  if ! command -v brew &>/dev/null 2>&1; then
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-    eval "$(/opt/homebrew/bin/brew shellenv)"
-  fi
+generate_barcode_pattern() {
+    local chars=("▌" "│" "█" "║")
+    local pattern=""
+    local width=30
+    
+    for ((i=0; i<width; i++)); do
+        pattern+="${chars[$RANDOM % 4]}"
+    done
+    echo "$pattern"
 }
 
-function add_symbolic_links() {
-  cat .list_stow | xargs -L1 stow --adopt
-  # git restore .
-}
-
-function install_homebrew_formulae() {
-  local brew_file=$1
-  local cask_file=$2
-
-  # Get list of installed packages in advance
-  local installed_formulae=($(brew list --formula))
-  local installed_casks=($(brew list --cask))
-
-  # Install regular packages
-  while IFS= read -r formula; do
-    if [[ ! " ${installed_formulae[@]} " =~ " ${formula} " ]]; then
-      brew install "$formula" >/dev/null 2>&1
-    fi
-  done < "$brew_file"
-
-  # Install cask packages
-  while IFS= read -r formula; do
-    if [[ ! " ${installed_casks[@]} " =~ " ${formula} " ]]; then
-      brew install --cask "$formula" >/dev/null 2>&1
-    fi
-  done < "$cask_file"
-}
-
-function install_rust() {
-  if ! command -v rustup >/dev/null 2>&1; then
-    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-    source "$HOME/.cargo/env"
-
-    rustup self update
-    rustup update
-  fi
-}
-
-# Define spinner animation characters
-readonly SPINNER=('⣾' '⣽' '⣻' '⢿' '⡿' '⣟' '⣯' '⣷')
-
-# Initialize screen buffer with installation UI
 setup_screen() {
-    printf "\033[2J\033[H"  # Clear screen and move cursor home
+    printf "\033[2J\033[H"
+    printf "\033[?25l"
+    
+    local barcode=$(generate_barcode_pattern)
+    
     printf "╭──────────────────────────────────╮\n"
-    printf "│                                  │\n"
-    printf "│  ○ Dotfiles installation         │\n"
-    printf "│                                  │\n"
-    printf "│                                  │\n"
-    printf "╰──────────────────────────────────╯\n"
-}
-
-function cleanup() {
-    # Clear current line
-    printf "\033[2K"
+    printf "│  %s  │\n" "$barcode"
+    printf "│  %s  │\n" "$barcode"
+    printf "│  %s  │\n" "$barcode"
+    printf "╰──────────────────────────────────╯\n\n"
     
-    # Show cursor
-    printf "\033[?25h"
-    
-    # Display final state cleanly
-    printf "\033[4;1H│  ■ Installation interrupted!     │"
-    printf "\033[5;1H│                                  │"
-    printf "\033[6;1H╰──────────────────────────────────╯"
-    printf "\033[7;1H"
+    local steps=(
+        "Initialize repository"
+        "Install Homebrew" 
+        "Install Homebrew packages"
+        "Setup Rust"
+        "Create symlinks"
+        "Setup mise"
+    )
+    local line=6
+    for step in "${steps[@]}"; do
+        printf "\033[%d;3H○  %s\n" "$line" "$step"
+        ((line++))
+    done
 }
 
 update_status() {
-    local message=$1
-    local command=$2
-    local args=("${@:3}")
+    local line=$1
+    local message=$2
+    local command=$3
+    shift 3
 
     if [ -t 1 ] && [ -t 2 ]; then
-        # Hide cursor
-        printf "\033[?25l"
-        printf "\033[4;1H│  ⋯ %-28s" "$message"
+        # 메시지 왼쪽 정렬을 위해 공백 추가
+        printf "\033[%d;3H${SPINNER[0]}  %s" "$line" "$message"
         
-        # Execute in background
-        $command "${args[@]}" &
+        local temp_file=$(mktemp)
+        $command "$@" > "$temp_file" 2>&1 &
         local pid=$!
         
-        # Save original INT handler
-        trap 'kill $pid 2>/dev/null; cleanup; printf "Installation was interrupted.\n"; exit 1' INT
-        
-        # Spinner animation
         local i=0
         while kill -0 $pid 2>/dev/null; do
-            printf "\033[4;1H│  ${SPINNER[i]} %-28s" "$message"
+            printf "\033[%d;3H${SPINNER[i]}  %s" "$line" "$message"
             i=$(( (i + 1) % 8 ))
             sleep 0.1
         done
         
-        # Restore original INT handler
-        trap cleanup INT
-        
-        # Check result
         wait $pid
         local result=$?
         
-        # Show cursor
-        printf "\033[?25h"
-        
         if [ $result -eq 0 ]; then
-            printf "\033[4;1H│  ✓ %-28s" "$message"
+            printf "\033[%d;3H●  %s" "$line" "$message"
+            rm "$temp_file"
+            return 0
         else
-            # Execute original process on error (cleanup is called by caller)
-            return $result
+            printf "\033[%d;3H\033[31m■  %s\033[0m" "$line" "$message"
+            printf "\033[11;1H\033[31mError: %s failed\033[0m" "$message"
+            printf "\033[12;1H\033[31m%s\033[0m" "$(cat "$temp_file")"
+            rm "$temp_file"
+            return 1
         fi
     else
-        $command "${args[@]}" || {
-            echo "Installation was interrupted."
-            exit 1
-        }
+        echo "Installing: $message"
+        $command "$@"
     fi
 }
 
+initialize_repository() {
+    if [ ! -d "$DOTFILES" ] || [ ! -d "$DOTFILES/.git" ]; then
+        git clone --depth 1 "$REPO" "$DOTFILES" >/dev/null 2>&1 || exit 1
+        cd "$DOTFILES" || exit 1
+        return 0
+    fi
+
+    cd "$DOTFILES" || exit 1
+    local current_remote
+    current_remote=$(git remote get-url origin 2>/dev/null)
+    
+    if [ "$current_remote" != "$REPO" ]; then
+        echo "Error: Different repository exists at $DOTFILES"
+        echo "Expected: $REPO" 
+        echo "Found: $current_remote"
+        exit 1
+    fi
+
+    git pull --ff-only >/dev/null 2>&1
+    return 0
+}
+
+install_packages() {
+    local installed_formulae=($(brew list --formula))
+    local installed_casks=($(brew list --cask))
+
+    while read -r formula; do
+        if [[ ! " ${installed_formulae[@]} " =~ " ${formula} " ]]; then
+            brew install $formula >/dev/null 2>&1
+        fi
+    done < .list_brew
+
+    while read -r formula; do
+        if [[ ! " ${installed_casks[@]} " =~ " ${formula} " ]]; then
+            brew install --cask $formula >/dev/null 2>&1
+        fi
+    done < .list_brewcask
+}
+
+setup_rust() {
+    if ! command -v rustup >/dev/null 2>&1; then
+        curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y >/dev/null 2>&1
+        source $HOME/.cargo/env
+        rustup self update >/dev/null 2>&1
+        rustup update >/dev/null 2>&1
+    fi
+}
+
+create_symlinks() {
+    xargs -L1 stow --adopt < .list_stow
+    git restore .
+}
+
+setup_mise() {
+    mise trust ~/.config/mise/config.toml -q
+}
+
 main() {
-  # if [ -t 0 ]; then
-  #   stty -echoctl
-  # fi
-  
-  setup_screen
+    if [ -t 1 ] && [ -t 2 ]; then
+        setup_screen
+        trap 'printf "\033[11;1H\033[31mInstallation cancelled\033[0m\n\033[?25h"; exit 1' INT
+        trap 'printf "\033[?25h"' EXIT
+    fi
 
-  # Check if running in terminal
-  if [ -t 1 ] && [ -t 2 ]; then
-    # Only handle stty and cursor settings in terminal
-    # stty -echoctl
-    trap cleanup INT
-    trap 'printf "\033[?25h" 2>/dev/null' EXIT
-  else
-    # Use simplified output for pipes or redirections
-    trap cleanup INT
-    setup_screen() { :; }  # Ignore screen setup
-    update_status() {
-      local message=$1
-      local command=$2
-      local args=("${@:3}")
-      echo "Installing: $message"
-      $command "${args[@]}"
-    }
-  fi
+    update_status 6 "Initialize repository" initialize_repository || exit 1
+    update_status 7 "Install Homebrew" install_homebrew || exit 1
+    update_status 8 "Install Homebrew packages" install_packages || exit 1
+    update_status 9 "Setup Rust" setup_rust || exit 1
+    update_status 10 "Create symlinks" create_symlinks || exit 1
+    update_status 11 "Setup mise" setup_mise || exit 1
 
-  # Installation steps
-  update_status "Initializing..." clone_repository || exit 1  # Exit on error
-
-  local dotfiles_dir=$HOME/dotfiles
-  cd $dotfiles_dir || exit 1
-
-  update_status "Checking for conflicts..." sleep 1 || exit 1
-  update_status "Homebrew..." install_homebrew || exit 1
-  update_status "Homebrew formulae..." install_homebrew_formulae ".list_brew" ".list_brewcask" || exit 1
-  update_status "Installing Rust..." install_rust || exit 1
-  update_status "Creating symlinks..." add_symbolic_links || exit 1
-
-  mise trust ~/.config/mise/config.toml -q
-
-  update_status "Installing dotfiles..." sleep 1 || exit 1
-
-  # Display completion message
-  if [ -t 1 ] && [ -t 2 ]; then
-    printf "\033[4;1H│  ● Installation completed!"
-    printf "\033[7;1H"
-  fi
-  echo "Dotfiles have been successfully installed."
+    if [ -t 1 ] && [ -t 2 ]; then
+        printf "\033[13;1HInstallation completed!\n"
+    fi
 }
 
 main
