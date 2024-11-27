@@ -35,6 +35,7 @@ alias ls='ls -l --color'
 alias cat='bat'
 alias clr='clear'
 alias tx='tmux attach || tmux new'
+alias br='brew'
 
 # # Integrations
 # eval "$(fzf --zsh)"
