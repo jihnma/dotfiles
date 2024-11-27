@@ -3,6 +3,7 @@ git
 tmux
 helix
 mise
+bat
 bash
 fzf
 sheldon
