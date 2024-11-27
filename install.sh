@@ -53,6 +53,7 @@ setup_alacritty_theme() {
 
 setup_mise() {
     command -v mise >/dev/null 2>&1 && mise trust ~/.config/mise/config.toml -q
+    mise install
 }
 
 setup_rust() {
@@ -74,6 +75,7 @@ main() {
     setup_rust
     setup_mise
     create_symlinks
+    source $HOME/.zshrc
 
     echo "Installation completed successfully!"
 }
