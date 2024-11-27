@@ -32,7 +32,7 @@ style = "Italic"
 y = 6
 
 [terminal.shell]
-program = "/bin/zsh"
+program = "tmux"
 
 [window]
 decorations = "buttonless"
