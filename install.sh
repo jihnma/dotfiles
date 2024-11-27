@@ -9,13 +9,12 @@ REPO="https://github.com/jihnma/dotfiles.git"
 DOTFILES="$HOME/dotfiles"
 
 install_homebrew() {
-    command -v brew &>/dev/null && return 0
-    
-    export NONINTERACTIVE=1
-    curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh | sh || return 1
-    
-    [ -f "/opt/homebrew/bin/brew" ] && eval "$(/opt/homebrew/bin/brew shellenv)" || return 1
-    return 0
+    if ! command -v brew &>/dev/null; then
+        export NONINTERACTIVE=1
+        curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh | sh || return 1
+        
+        [ -f "/opt/homebrew/bin/brew" ] && eval "$(/opt/homebrew/bin/brew shellenv)" || return 1
+    fi
 }
 
 initialize_repository() {
