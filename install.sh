@@ -9,11 +9,11 @@ REPO="https://github.com/jihnma/dotfiles.git"
 DOTFILES="$HOME/dotfiles"
 
 install_homebrew() {
-    if command -v brew &>/dev/null; then 
+    if command -v brew > /dev/null 2>&1; then 
         return 0 
     fi
     
-    if ! sudo -v &>/dev/null; then
+    if ! sudo -v > /dev/null 2>&1; then
         echo "Error: Administrator privileges required for Homebrew installation"
         return 1
     fi
@@ -33,18 +33,18 @@ install_homebrew() {
 
 initialize_repository() {
     if [ ! -d "$DOTFILES/.git" ]; then
-        git clone --depth 1 "$REPO" "$DOTFILES" >/dev/null 2>&1 || return 1
+        git clone --depth 1 "$REPO" "$DOTFILES" > /dev/null 2>&1 || return 1
         cd "$DOTFILES" || return 1
         return 0
     fi
 
     cd "$DOTFILES" || return 1
-    [ "$(git remote get-url origin 2>/dev/null)" != "$REPO" ] && {
+    if [ "$(git remote get-url origin 2>/dev/null)" != "$REPO" ]; then
         echo "Error: Repository mismatch at $DOTFILES"
         return 1
-    }
+    fi
 
-    git pull --ff-only >/dev/null 2>&1
+    git pull --ff-only > /dev/null 2>&1
 }
 
 install_homebrew_packages() {
@@ -65,17 +65,17 @@ setup_alacritty_theme() {
 }
 
 setup_mise() {
-    command -v mise >/dev/null 2>&1 && mise trust ~/.config/mise/config.toml -q
+    command -v mise > /dev/null 2>&1 && mise trust ~/.config/mise/config.toml -q
     mise install
 }
 
 setup_rust() {
-    command -v rustup >/dev/null 2>&1 && return 0
+    command -v rustup > /dev/null 2>&1 && return 0
     
-    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y >/dev/null 2>&1
-    source $HOME/.cargo/env
-    rustup self update >/dev/null 2>&1
-    rustup update >/dev/null 2>&1
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y > /dev/null 2>&1
+    source "$HOME/.cargo/env"
+    rustup self update > /dev/null 2>&1
+    rustup update > /dev/null 2>&1
 }
 
 main() {
@@ -88,7 +88,7 @@ main() {
     setup_alacritty_theme
     setup_rust
     setup_mise
-    source $HOME/.zshrc
+    source "$HOME/.zshrc"
 
     echo "Installation completed successfully!"
 }
