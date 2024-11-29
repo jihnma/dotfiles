@@ -9,11 +9,25 @@ REPO="https://github.com/jihnma/dotfiles.git"
 DOTFILES="$HOME/dotfiles"
 
 install_homebrew() {
-    if ! command -v brew &>/dev/null; then
-        export NONINTERACTIVE=1
-        curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh | sh || return 1
-        
-        [ -f "/opt/homebrew/bin/brew" ] && eval "$(/opt/homebrew/bin/brew shellenv)" || return 1
+    if command -v brew &>/dev/null; then 
+        return 0 
+    fi
+    
+    if ! sudo -v &>/dev/null; then
+        echo "Error: Administrator privileges required for Homebrew installation"
+        return 1
+    fi
+    
+    export NONINTERACTIVE=1
+    if ! curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh | /bin/bash -; then
+        echo "Error: Homebrew installation failed"
+        return 1
+    fi
+    
+    if [ -f "/opt/homebrew/bin/brew" ]; then
+        eval "$(/opt/homebrew/bin/brew shellenv)"
+    else
+        return 1
     fi
 }
 
@@ -70,10 +84,10 @@ main() {
     install_homebrew
     initialize_repository 
     install_homebrew_packages
+    create_symlinks
     setup_alacritty_theme
     setup_rust
     setup_mise
-    create_symlinks
     source $HOME/.zshrc
 
     echo "Installation completed successfully!"
