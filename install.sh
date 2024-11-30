@@ -8,13 +8,6 @@ fi
 REPO="https://github.com/jihnma/dotfiles.git"
 DOTFILES="$HOME/dotfiles"
 
-install_kitty() {    
-    if command kitty > /dev/null 2>&1; then 
-        return 0 
-    fi
-    curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin
-}
-
 install_homebrew() {
     if command -v brew > /dev/null 2>&1; then 
         return 0 
@@ -86,7 +79,6 @@ main() {
     install_homebrew
     initialize_repository 
     install_homebrew_packages
-    install_kitty
     create_symlinks
     setup_rust
     setup_mise
