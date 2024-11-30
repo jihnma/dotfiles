@@ -1,5 +1,4 @@
 arc
-alacritty --no-quarantine
 font-intone-mono-nerd-font
 chromium --no-quarantine
 raycast

@@ -8,6 +8,13 @@ fi
 REPO="https://github.com/jihnma/dotfiles.git"
 DOTFILES="$HOME/dotfiles"
 
+install_kitty() {    
+    if command kitty > /dev/null 2>&1; then 
+        return 0 
+    fi
+    curl -L https://sw.kovidgoya.net/kitty/installer.sh | sh /dev/stdin
+}
+
 install_homebrew() {
     if command -v brew > /dev/null 2>&1; then 
         return 0 
@@ -59,11 +66,6 @@ create_symlinks() {
     git restore .
 }
 
-setup_alacritty_theme() {
-    [ -f ~/.config/alacritty/catppuccin-macchiato.toml ] && return 0
-    curl -LO --output-dir ~/.config/alacritty https://github.com/catppuccin/alacritty/raw/main/catppuccin-macchiato.toml
-}
-
 setup_mise() {
     command -v mise > /dev/null 2>&1 && mise trust ~/.config/mise/config.toml -q
     mise install
@@ -84,8 +86,8 @@ main() {
     install_homebrew
     initialize_repository 
     install_homebrew_packages
+    install_kitty
     create_symlinks
-    setup_alacritty_theme
     setup_rust
     setup_mise
     source "$HOME/.zshrc"
