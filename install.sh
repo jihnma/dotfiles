@@ -5,7 +5,7 @@ if [ "${SHELL##/*/}" != "zsh" ]; then
     exit 1
 fi
 
-REPO="https://github.com/jihnma/dotfiles.git"
+REPO="git@github.com:jihnma/dotfiles.git"
 DOTFILES="$HOME/dotfiles"
 
 install_kitty() {    
