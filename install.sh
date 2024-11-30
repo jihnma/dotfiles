@@ -12,7 +12,7 @@ install_kitty() {
     if command kitty > /dev/null 2>&1; then 
         return 0 
     fi
-    curl -L https://sw.kovidgoya.net/kitty/installer.sh | sh /dev/stdin
+    curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin
 }
 
 install_homebrew() {
