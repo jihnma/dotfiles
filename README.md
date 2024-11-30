@@ -3,7 +3,7 @@
 My OSX dotfiles.
 
 ```sh
-curl -L https://raw.githubusercontent.com/jihnma/dotfiles/HEAD/install.sh | sh
+curl -L https://raw.githubusercontent.com/jihnma/dotfiles/HEAD/install.sh | zsh
 ```
 
 > [!CAUTION]
