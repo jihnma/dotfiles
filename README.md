@@ -44,6 +44,14 @@ cd ~/dotfiles
 stow .
 ```
 
+### Install tmux
+
+TODO
+
+### Config git config
+
+TODO
+
 ### Install Rust (Optional)
 
 If you need Rust for your projects, install it using the following command:
