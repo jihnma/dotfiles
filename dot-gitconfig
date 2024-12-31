@@ -1,0 +1,25 @@
+[include]
+  path = ~/.gitconfig.local
+
+[init]
+	defaultBranch = main
+
+[push]
+	default = matching
+
+[core]
+	editor = hx
+	excludesfile = ~/.gitconfig.ignore
+
+[alias]
+	cm = !git add . && git commit -m
+	sw = switch -c
+	st = status -s
+	lo = log --oneline
+	wp = !git add . && git commit -am "wip"
+
+[commit]
+	gpgsign = true
+
+[gpg]
+	format = ssh
