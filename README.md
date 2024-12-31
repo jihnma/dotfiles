@@ -44,7 +44,7 @@ cd ~/dotfiles
 stow .
 ```
 
-### Install rust (Optional)
+### Install Rust (Optional)
 
 If you need Rust for your projects, install it using the following command:
 
