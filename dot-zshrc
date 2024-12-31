@@ -1,0 +1,18 @@
+eval "$(/opt/homebrew/bin/brew shellenv)"
+eval "$(/opt/homebrew/bin/mise activate zsh)"
+eval "$(sheldon source)"
+
+local icon=
+local mark="%(?,%F{10}$icon,%F{9}$icon)%f"
+local cwd="%F{4}%1~%f"
+
+PROMPT="$mark "
+RPROMPT="%F{8}loading%f"
+
+setopt prompt_subst
+zsh-defer -c "RPROMPT=$cwd"
+zsh-defer -c 'RPROMPT+=" %F{8}\$(git rev-parse --abbrev-ref HEAD 2>/dev/null)%f"'
+
+if [ -f ~/.zshrc.local ]; then
+  source ~/.zshrc.local
+fi

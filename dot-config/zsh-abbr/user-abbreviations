@@ -1,0 +1,10 @@
+abbr ll="ls -goahG"
+abbr cl="clear"
+abbr tx="tmux -2 a || tmux -2"
+
+abbr br="brew"
+abbr ya="yarn"
+abbr pn="pnpm"
+abbr gi="git"
+
+abbr mkdir="mkdir -p"
