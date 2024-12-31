@@ -1,0 +1,103 @@
+[language-server.biome]
+command = "biome"
+args = ["lsp-proxy"]
+
+[language-server.eslint]
+command = "vscode-eslint-language-server"
+args = ["--stdio"]
+
+[language-server.eslint.config]
+format = { enable = true }
+nodePath = ""
+rulesCustomizations = []
+run = "onType"
+validate = "on"
+experimental = {}
+problems = { shortenToSingleLine = false }
+
+[language-server.emmet-ls]
+command = "emmet-ls"
+args = ["--stdio"]
+
+[[language-server.typescript-language-server.config.plugins]]
+name = "@vue/typescript-plugin"
+location = "${npm config get prefix}/lib/node_modules/@vue/language-server/"
+languages = ["vue"]
+
+[language-server.ruff]
+command = "ruff"
+args = ["server"]
+
+[language-server.pyright.config.python.analysis]
+typeCheckingMode = "basic"
+
+[[language]]
+name = "typescript"
+file-types = ["ts", "js"]
+language-servers = [
+  { name = "typescript-language-server", except-features = [
+    "format",
+  ] },
+  "biome",
+]
+formatter = { command = "biome", args = [
+  "format",
+  "--stdin-file-path",
+  "a.ts",
+] }
+auto-format = true
+
+[[language]]
+name = "tsx"
+file-types = ["tsx", "jsx"]
+language-servers = [
+  { name = "typescript-language-server", except-features = [
+    "format",
+  ] },
+  "biome",
+  "emmet-ls",
+  "tailwindcss-ls",
+]
+formatter = { command = "biome", args = [
+  "format",
+  "--stdin-file-path",
+  "a.tsx",
+] }
+auto-format = true
+
+[[language]]
+name = "html"
+language-servers = ["vscode-html-language-server", "emmet-ls", "tailwindcss-ls"]
+
+[[language]]
+name = "css"
+language-servers = ["vscode-css-language-server", "tailwindcss-ls"]
+
+[[language]]
+name = "vue"
+language-servers = ["typescript-language-server"]
+formatter = { command = "biome", args = [
+  "format",
+  "--stdin-file-path",
+  "a.vue",
+] }
+auto-format = true
+
+[[language]]
+name = "json"
+formatter = { command = "biome", args = [
+  "format",
+  "--stdin-file-path",
+  "a.json",
+] }
+auto-format = true
+
+[[language]]
+name = "toml"
+formatter = { command = "taplo", args = ["fmt", "-"] }
+auto-format = true
+
+[[language]]
+name = "python"
+language-servers = ["pyright", "ruff"]
+auto-format = true
