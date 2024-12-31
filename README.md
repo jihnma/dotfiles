@@ -46,7 +46,13 @@ stow .
 
 ### Install tmux
 
-TODO
+Set up the tmux plugin manager for plugin management:
+
+```sh
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+```
+
+After installing TPM, open your tmux session, then press `prefix` + <kbd> I </kbd> (capital 'i') to install plugins defined in the `tmux.conf` file.
 
 ### Config git config
 
