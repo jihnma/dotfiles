@@ -1,0 +1,8 @@
+--verbose
+--dotfiles
+--no-folding
+
+--ignore=.stowrc
+--ignore=dot-gitconfig.local
+--ignore=brew
+--ignore=brewcask
