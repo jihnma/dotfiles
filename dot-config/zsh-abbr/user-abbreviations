@@ -3,6 +3,7 @@ abbr cl="clear"
 abbr tx="tmux -2 a || tmux -2"
 
 abbr br="brew"
+abbr bd="brew deps --tree --installed"
 abbr ya="yarn"
 abbr pn="pnpm"
 abbr gi="git"
