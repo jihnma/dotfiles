@@ -40,58 +40,7 @@ tab = "→"
 C-s = ":w"
 C-y = ["yank_to_clipboard"]
 C-g = [":new", ":insert-output lazygit", ":buffer-close!", ":redraw"]
-theme = "mytheme"
-
-[editor]
-bufferline = "multiple"
-cursorline = true
-line-number = "relative"
-true-color = true
-scroll-lines = 1
-gutters = ["diagnostics", "spacer", "line-numbers", "spacer", "diff"]
-
-[editor.statusline]
-left = ["mode", "spinner", "diagnostics"]
-center = ["file-name"]
-right = ["version-control", "file-encoding", "file-line-ending", "file-type"]
-mode.normal = "NORMAL"
-mode.insert = "INSERT"
-mode.select = "SELECT"
-
-[editor.file-picker]
-hidden = false
-
-[editor.lsp]
-auto-signature-help = false
-display-messages = true
-
-[editor.indent-guides]
-character = "┊"
-render = true
-skip-levels = 0
-
-[editor.whitespace.render]
-tab = "all"
-space = "all"
-
-[editor.whitespace.characters]
-space = "·"
-tab = "→"
-
-[keys.normal]
-C-s = ":w"
-C-y = ["yank_to_clipboard"]
-C-g = [":new", ":insert-output lazygit", ":buffer-close!", ":redraw"]
 C-h = ":sh tmux popup -d \"#{pane_current_path}\" -xC -yC -w90% -h60% -E lazygit"
-
-[keys.normal.space]
-"x" = ":buffer-close"
-"w" = { r = ":reload", c = ":config-reload" }
-"." = "file_picker_in_current_buffer_directory"
-
-[keys.insert]
-j = { k = "normal_mode" }
-esc = ["collapse_selection", "normal_mode"]
 
 [keys.normal.space]
 "x" = ":buffer-close"
