@@ -39,8 +39,7 @@ tab = "→"
 [keys.normal]
 C-s = ":w"
 C-y = ["yank_to_clipboard"]
-C-g = [":new", ":insert-output lazygit", ":buffer-close!", ":redraw"]
-C-n = ":sh tmux popup -d \"#{pane_current_path}\" -xC -yC -w90% -h60% -E lazygit"
+C-g = ":sh tmux popup -d \"#{pane_current_path}\" -xC -yC -w90% -h60% -E lazygit"
 
 [keys.normal.space]
 "x" = ":buffer-close"
