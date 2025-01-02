@@ -38,12 +38,12 @@ tab = "→"
 
 [keys.normal]
 C-s = ":w"
+C-r = ":reload"
 C-y = ["yank_to_clipboard"]
 C-g = ":sh tmux popup -d \"#{pane_current_path}\" -xC -yC -w90% -h60% -E lazygit"
 
 [keys.normal.space]
 "x" = ":buffer-close"
-"w" = { r = ":reload", c = ":config-reload" }
 "." = "file_picker_in_current_buffer_directory"
 
 [keys.insert]
