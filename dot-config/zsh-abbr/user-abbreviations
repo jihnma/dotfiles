@@ -1,4 +1,6 @@
 abbr ll="ls -goahG"
+abbr lt="npx tree-cli -l 6 --ignore 'node_modules/, .git/, .gitignore'"
+
 abbr cl="clear"
 abbr tx="tmux -2 a || tmux -2"
 
