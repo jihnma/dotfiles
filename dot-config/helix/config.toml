@@ -7,6 +7,7 @@ line-number = "relative"
 true-color = true
 scroll-lines = 1
 gutters = ["diagnostics", "spacer", "line-numbers", "spacer", "diff"]
+end-of-line-diagnostics = "hint"
 
 [editor.statusline]
 left = ["mode", "spinner", "diagnostics"]
@@ -22,6 +23,9 @@ hidden = false
 [editor.lsp]
 auto-signature-help = false
 display-messages = true
+
+[editor.inline-diagnostics]
+cursor-line = "error"
 
 [editor.indent-guides]
 character = "┊"
