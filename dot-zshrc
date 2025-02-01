@@ -16,3 +16,7 @@ zsh-defer -c 'RPROMPT+=" %F{8}\$(git rev-parse --abbrev-ref HEAD 2>/dev/null)%f"
 if [ -f ~/.zshrc.local ]; then
   source ~/.zshrc.local
 fi
+
+if [ -z "$TMUX" ]; then
+    tmux attach -t default || tmux new -s default
+fi
