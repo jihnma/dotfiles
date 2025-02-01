@@ -1,6 +1,7 @@
 eval "$(/opt/homebrew/bin/brew shellenv)"
 eval "$(/opt/homebrew/bin/mise activate zsh)"
 eval "$(sheldon source)"
+eval "$(zoxide init zsh --hook prompt --cmd cd)"
 
 local icon=
 local mark="%(?,%F{10}$icon,%F{9}$icon)%f"
