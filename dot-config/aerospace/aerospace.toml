@@ -70,4 +70,4 @@ p = ['move up', 'mode main']
 2 = ['move-node-to-workspace 2', 'workspace 2', 'mode main']
 3 = ['move-node-to-workspace 3', 'workspace 3', 'mode main']
 
-space = ['layout floating tiling', 'mode main']
+quote = ['layout floating tiling', 'mode main']
