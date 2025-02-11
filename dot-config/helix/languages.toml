@@ -38,6 +38,7 @@ language-servers = [
   { name = "typescript-language-server", except-features = [
     "format",
   ] },
+  "eslint",
   "biome",
 ]
 formatter = { command = "biome", args = [
