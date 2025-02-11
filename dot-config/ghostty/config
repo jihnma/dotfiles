@@ -2,7 +2,7 @@ theme = horizon
 
 font-family = IntoneMono Nerd Font Mono
 font-thicken = true
-font-size = 15.5
+font-size = 14.5
 font-codepoint-map = U+EF76=JetBrainsMono Nerd Font
 
 window-padding-x = 20
