@@ -1,16 +1,13 @@
 # dotfiles
 
-This repository is primarily for macOS systems and contains my personal dotfiles, designed to create an efficient development environment.
+My macOS setup for a fast and productive development environment.
 
-Feel free to use anything from these dotfiles, but do so at your own risk.
+> [!WARNING]
+> Feel free to use these files, but do so at your own risk.
 
-## Installation  
+## Quick Start
 
-To apply the dotfiles to your system, follow these steps:  
-
-### Install Homebrew
-
-First, ensure that Homebrew is installed on your system. If it's not installed, run the following command:
+### 1. Install Homebrew [^1]
 
 ```sh
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -22,29 +19,29 @@ After installation, configure your shell environment for Homebrew:
 eval "$(/opt/homebrew/bin/brew shellenv)"
 ```
 
-### Clone the repository
+[^1]: https://brew.sh/
+
+### 2. Clone This Repo
 
 ```sh
-git clone https://github.com/jihnma/dotfiles.git
+git clone https://github.com/jihnma/dotfiles.git && cd dotfiles  
 ```
 
-### Install brew packages
+### 3. Install brew packages
 
-The `brew` and `brewcask` files in the dotfiles directory contain lists of Homebrew formulae and casks that are essential for the development environment. To install these packages, use the following commands:
+Install packages:
 
 ```sh
-sort ~/dotfiles/brew | xargs brew install
-sort ~/dotfiles/brewcask | xargs brew install --cask
+sort brew | xargs brew install
 ```
 
-### Link using Stow  
+Install GUI apps:
 
 ```sh
-cd ~/dotfiles
-stow .
+sort brewcask | xargs brew install --cask
 ```
 
-### Install tmux
+### 4. Install tmux plugins
 
 Set up the tmux plugin manager for plugin management:
 
@@ -54,25 +51,32 @@ git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 
 After installing TPM, open your tmux session, then press `prefix` + <kbd> I </kbd> (capital 'i') to install plugins defined in the `tmux.conf` file.
 
-### Config git config
+### 5. Link Dotfiles
+
+```sh
+cd ~/dotfiles && stow .
+```
+
+### 6. Config git config
 
 TODO
 
-### Install Rust (Optional)
+## Optional Steps
+
+### Install Rust [^2]
 
 If you need Rust for your projects, install it using the following command:
 
 ```sh
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y > /dev/null 2>&1
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 ```
 
-## Uninstallation  
+[^2]: https://rustup.rs/
+
+## Remove Dotfiles
 
 To remove the dotfiles, follow these steps:  
 
-### Unlink using Stow  
-
 ```sh
-cd ~/dotfiles
-stow -D .
+cd ~/dotfiles && stow -D .
 ```
