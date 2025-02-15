@@ -1,21 +1,4 @@
-[includeIf "gitdir:~/user1/"]
-    path = ~/user1/.gitconfig
-
-[includeIf "gitdir:~/user2/"]
-    path = ~/user2/.gitconfig
-
 [user]
 	name = Your Name
 	email = you@example.com
     signingKey = /Users/you/.ssh/key.pub
-
-[url "git@github-user.com"]
-  insteadOf = git@github.com
-
-[credential "https://github.com"]
-	helper = 
-	helper = !/opt/homebrew/bin/gh auth git-credential
-
-[credential "https://gist.github.com"]
-	helper = 
-	helper = !/opt/homebrew/bin/gh auth git-credential
