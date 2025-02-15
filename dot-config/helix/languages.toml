@@ -55,6 +55,7 @@ language-servers = [
   { name = "typescript-language-server", except-features = [
     "format",
   ] },
+  "eslint",
   "biome",
   "emmet-ls",
   "tailwindcss-ls",
