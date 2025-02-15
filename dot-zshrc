@@ -11,7 +11,7 @@ PROMPT="$mark "
 RPROMPT="%F{8}loading%f"
 
 setopt prompt_subst
-zsh-defer -c "RPROMPT=$cwd"
+zsh-defer -c 'RPROMPT="%2~"'
 zsh-defer -c 'RPROMPT+=" %F{8}\$(git rev-parse --abbrev-ref HEAD 2>/dev/null)%f"'
 
 if [ -f ~/.zshrc.local ]; then
