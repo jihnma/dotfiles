@@ -57,10 +57,6 @@ After installing TPM, open your tmux session, then press `prefix` + <kbd> I </kb
 cd ~/dotfiles && stow .
 ```
 
-### 6. Config git config
-
-TODO
-
 ## Optional Steps
 
 ### Install Rust [^2]
