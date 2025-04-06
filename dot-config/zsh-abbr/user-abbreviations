@@ -2,6 +2,7 @@ abbr ll="ls -goahG"
 abbr lt="npx tree-cli -l 6 --ignore 'node_modules/, .git/, .gitignore'"
 
 abbr cl="clear"
+abbr cll="clear && printf '\e[3J'"
 abbr tx="tmux -2 a || tmux -2"
 
 abbr br="brew"
