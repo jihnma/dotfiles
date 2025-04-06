@@ -1,23 +1,30 @@
+setopt prompt_subst
+
 eval "$(/opt/homebrew/bin/brew shellenv)"
 eval "$(/opt/homebrew/bin/mise activate zsh)"
 eval "$(sheldon source)"
 eval "$(zoxide init zsh --hook prompt --cmd cd)"
 
-local icon=
-local mark="%(?,%F{10}$icon,%F{9}$icon)%f"
-local cwd="%F{4}%1~%f"
+# Prompt 
+local pt_icon=
+local pt_date="%F{8}%D{%-m/%-d %a} %*%f"
+local pt_time="%F{8}%*%f"
+local pt_dir="%F{4}%1~%f"
+local pt_mark="%(?,%F{10}$pt_icon,%F{9}$pt_icon)%f"
 
-PROMPT="$mark "
-RPROMPT="%F{8}loading%f"
+get_branch() {
+  local branch
+  branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
+  [[ -n "$branch" ]] && echo "%F{8}($branch)%f"
+}
 
-setopt prompt_subst
-zsh-defer -c 'RPROMPT="%2~"'
-zsh-defer -c 'RPROMPT+=" %F{8}\$(git rev-parse --abbrev-ref HEAD 2>/dev/null)%f"'
+PROMPT=$'\n$pt_mark '
+RPROMPT="\$(get_branch) $pt_dir $pt_time"
 
 if [ -f ~/.zshrc.local ]; then
   source ~/.zshrc.local
 fi
 
-if [ -z "$TMUX" ]; then
-    tmux attach -t default || tmux new -s default
-fi
+# if [ -z "$TMUX" ]; then
+#   tmux attach -t default || tmux new -s default
+# fi
