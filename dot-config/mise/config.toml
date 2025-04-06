@@ -2,12 +2,10 @@
 node = "lts"
 bun = "latest"
 python = "latest"
+rust = "latest"
 
 [hooks]
 postinstall = "corepack enable"
 
 [env]
 MISE_NODE_DEFAULT_PACKAGES_FILE = "~/.config/mise/default-npm-packages"
-
-[settings]
-experimental = true
