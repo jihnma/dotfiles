@@ -1,4 +1,4 @@
-theme = "mytheme"
+theme = "gyaru"
 
 [editor]
 bufferline = "multiple"
@@ -8,11 +8,14 @@ true-color = true
 scroll-lines = 1
 gutters = ["diagnostics", "spacer", "line-numbers", "spacer", "diff"]
 end-of-line-diagnostics = "hint"
+color-modes = true
 
 [editor.statusline]
-left = ["mode", "spinner", "diagnostics"]
+left = ["version-control", "mode", "file-modification-indicator"]
 center = ["file-name"]
-right = ["version-control", "file-encoding", "file-line-ending", "file-type"]
+right = ["spinner", "diagnostics", "file-type"]
+separator = "│"
+
 mode.normal = "NORMAL"
 mode.insert = "INSERT"
 mode.select = "SELECT"
