@@ -13,10 +13,13 @@
 
 [alias]
 	cm = !git add . && git commit -m
-	sw = switch -c
-	st = status -s
+    sw = "!git fetch origin && git switch $1 2>/dev/null || git switch -c $1 2>/dev/nul || true"
+	ss = status -s
 	lo = log --oneline
+	ps = push origin HEAD
+	pl = pull
 	wp = !git add . && git commit -am "wip"
+	pr = commit --allow-empty -m "Make pull request"
 
 [commit]
 	gpgsign = true
