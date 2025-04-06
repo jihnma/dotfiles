@@ -2,15 +2,19 @@ theme = xcodedarkhc
 
 font-family = IntoneMono Nerd Font Mono
 font-thicken = true
+font-thicken-strength = 85
 font-size = 14
 font-codepoint-map = U+EF76=JetBrainsMono Nerd Font
 
-window-width = 98
-window-height = 30
-window-padding-x = 20
-window-padding-y = 15
+window-width = 110
+window-height = 32
+window-padding-x = 24
+window-padding-y = 16,0
 
 cursor-style = block
 cursor-style-blink = false
 shell-integration-features = no-cursor
 mouse-hide-while-typing = true
+
+macos-titlebar-style = hidden
+confirm-close-surface = false
