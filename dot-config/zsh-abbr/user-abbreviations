@@ -10,6 +10,7 @@ abbr bd="brew deps --tree --installed"
 abbr ya="yarn"
 abbr pn="pnpm"
 abbr gi="git"
+abbr gg="lazygit"
 abbr to="touch"
 
 abbr mkdir="mkdir -p"
