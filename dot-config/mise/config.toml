@@ -1,11 +1,14 @@
 [tools]
 node = "lts"
 bun = "latest"
-python = "latest"
 rust = "latest"
 
+python = "latest"
+uv = "latest"
+ruff = "latest"
+
 [hooks]
-postinstall = "corepack enable"
+postinstall = "corepack enable pnpm"
 
 [env]
 MISE_NODE_DEFAULT_PACKAGES_FILE = "~/.config/mise/default-npm-packages"

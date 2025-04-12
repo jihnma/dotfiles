@@ -1,16 +1,7 @@
 corepack
-
-@biomejs/biome
-
-@vue/language-server
-
-typescript-language-server
 typescript
-
-# https://github.com/helix-editor/helix/pull/11315
-vscode-langservers-extracted@4.8.0
-
-@tailwindcss/language-server
-emmet-ls
+typescript-language-server
+vscode-langservers-extracted
+@biomejs/biome
 
 pyright
