@@ -1,39 +1,41 @@
 theme = "gyaru"
 
 [editor]
-bufferline = "multiple"
-cursorline = true
 line-number = "relative"
-true-color = true
-scroll-lines = 1
-gutters = ["diagnostics", "spacer", "line-numbers", "spacer", "diff"]
+mouse = false
+popup-border = "all"
+cursorline = true
 end-of-line-diagnostics = "hint"
-color-modes = true
-
-[editor.statusline]
-left = ["version-control", "mode", "file-modification-indicator"]
-center = ["file-name"]
-right = ["spinner", "diagnostics", "file-type"]
-separator = "│"
-
-mode.normal = "NORMAL"
-mode.insert = "INSERT"
-mode.select = "SELECT"
-
-[editor.file-picker]
-hidden = false
-
-[editor.lsp]
-auto-signature-help = false
-display-messages = true
 
 [editor.inline-diagnostics]
 cursor-line = "error"
 
+[editor.statusline]
+left = [
+  "mode",
+  "file-name",
+  "read-only-indicator",
+  # "file-modification-indicator",
+]
+right = [
+  "diagnostics",
+  "spinner",
+  # "selections",
+  # "position",
+  # "separator",
+  "file-encoding",
+]
+mode.normal = "NORMAL"
+mode.insert = "INSERT"
+mode.select = "SELECT"
+
 [editor.indent-guides]
-character = "┊"
 render = true
-skip-levels = 0
+character = "▏"
+skip-levels = 1
+
+[editor.file-picker]
+hidden = false
 
 [editor.whitespace.render]
 tab = "all"
@@ -45,14 +47,9 @@ tab = "→"
 
 [keys.normal]
 C-s = ":w"
-C-r = ":reload"
+C-r = ":config-reload"
 C-y = ["yank_to_clipboard"]
 C-g = ":sh tmux popup -d \"#{pane_current_path}\" -xC -yC -w90% -h60% -E lazygit"
 
-[keys.normal.space]
-"x" = ":buffer-close"
-"." = "file_picker_in_current_buffer_directory"
-
 [keys.insert]
 j = { k = "normal_mode" }
-esc = ["collapse_selection", "normal_mode"]
