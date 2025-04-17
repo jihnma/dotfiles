@@ -6,6 +6,7 @@ mouse = false
 popup-border = "all"
 cursorline = true
 end-of-line-diagnostics = "hint"
+color-modes = true
 
 [editor.inline-diagnostics]
 cursor-line = "error"
@@ -46,6 +47,7 @@ space = "·"
 tab = "→"
 
 [keys.normal]
+s = ":write"
 C-s = ":w"
 C-r = ":config-reload"
 C-y = ["yank_to_clipboard"]
