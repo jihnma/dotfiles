@@ -12,17 +12,33 @@ language-servers = ["vscode-css-language-server", "tailwindcss-ls"]
 
 [[language]]
 name = "typescript"
-language-servers = ["typescript-language-server", "eslint", "biome"]
+language-servers = [
+  { name = "typescript-language-server", except-features = [
+    "format",
+  ] },
+  "biome",
+]
 auto-format = true
 
 [[language]]
 name = "tsx"
-language-servers = ["tailwindcss", "typescript-language-server", "biome"]
+language-servers = [
+  { name = "typescript-language-server", except-features = [
+    "format",
+  ] },
+  "biome",
+  "tailwindcss"
+]
 auto-format = true
 
 [[language]]
 name = "javascript"
-language-servers = ["typescript-language-server", "eslint", "biome"]
+language-servers = [
+  { name = "typescript-language-server", except-features = [
+    "format",
+  ] },
+  "biome",
+]
 auto-format = true
 
 [[language]]
