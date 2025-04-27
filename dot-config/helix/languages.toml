@@ -2,6 +2,10 @@
 command = "biome"
 args = ["lsp-proxy"]
 
+# https://github.com/helix-editor/helix/discussions/8372
+[language-server.typescript-language-server]
+required-root-patterns = ["package.json", "tsconfig.json"]
+
 [[language]]
 name = "html"
 language-servers = ["vscode-html-language-server", "tailwindcss-ls"]
@@ -27,7 +31,7 @@ language-servers = [
     "format",
   ] },
   "biome",
-  "tailwindcss"
+  "tailwindcss",
 ]
 auto-format = true
 
