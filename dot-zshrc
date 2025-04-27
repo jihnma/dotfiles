@@ -24,7 +24,3 @@ RPROMPT="\$(get_branch) $pt_dir $pt_time"
 if [ -f ~/.zshrc.local ]; then
   source ~/.zshrc.local
 fi
-
-# if [ -z "$TMUX" ]; then
-#   tmux attach -t default || tmux new -s default
-# fi
