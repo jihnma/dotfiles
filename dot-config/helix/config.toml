@@ -47,11 +47,12 @@ space = "·"
 tab = "→"
 
 [keys.normal]
-s = ":write"
+# s = ":write"
+# f = ["file_picker_in_current_directory"]
 C-s = ":w"
-C-r = ":config-reload"
+# C-r = ":config-reload"
 C-y = ["yank_to_clipboard"]
-C-g = ":sh tmux popup -d \"#{pane_current_path}\" -xC -yC -w90% -h60% -E lazygit"
+# C-g = ":sh tmux popup -d \"#{pane_current_path}\" -xC -yC -w90% -h60% -E lazygit"
 
 [keys.insert]
 j = { k = "normal_mode" }

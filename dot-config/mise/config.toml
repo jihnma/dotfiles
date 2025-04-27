@@ -1,7 +1,7 @@
 [tools]
 node = "lts"
 bun = "latest"
-rust = "latest"
+rust = { version = "latest", components = "rust-analyzer" }
 
 python = "latest"
 uv = "latest"
