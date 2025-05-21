@@ -21,6 +21,12 @@ eval "$(/opt/homebrew/bin/brew shellenv)"
 
 [^1]: https://brew.sh/
 
+Then install 1Password (if you want it):
+
+```sh
+brew install --cask 1password
+```
+
 ### 2. Clone This Repo
 
 ```sh
