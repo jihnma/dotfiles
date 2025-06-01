@@ -1,73 +1,32 @@
-# Also see: https://nikitabobko.github.io/AeroSpace/goodies#disable-hide-app
-automatically-unhide-macos-hidden-apps = true
-
-enable-normalization-flatten-containers = false
-enable-normalization-opposite-orientation-for-nested-containers = false
+start-at-login = true
+default-root-container-layout = 'accordion'
 
 [gaps]
-inner.horizontal = 8
-inner.vertical = 8
-outer.left = 8
-outer.bottom = 8
-outer.top = 8
-outer.right = 8
+inner.horizontal = 6
+inner.vertical = 6
+outer.left = 6
+outer.bottom = 6
+outer.top = 6
+outer.right = 6
 
 [[on-window-detected]]
-check-further-callbacks = true
-run = 'layout floating'
-# See: https://nikitabobko.github.io/AeroSpace/commands#exec-and-forget
-# You can uncomment the following lines to open up terminal with alt + enter shortcut (like in i3)
-# alt-enter = '''exec-and-forget osascript -e '
-# tell application "Terminal"
-#     do script
-#     activate
-# end tell'
-# '''
+if.app-id="com.mitchellh.ghostty"
+run= ["layout tiling"]
 
-# See: https://nikitabobko.github.io/AeroSpace/goodies#popular-apps-ids
-# [[on-window-detected]]
-# if.app-id = 'company.thebrowser.Browser'
-# if.window-title-regex-substring = 'Picture-in-Picture'
-# run = 'layout floating'
+[[on-window-detected]]
+if.app-id="com.1password.1password"
+run= ["layout floating"]
 
-# See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
-# All possible commands: https://nikitabobko.github.io/AeroSpace/commands
 [mode.main.binding]
-
-# See: https://nikitabobko.github.io/AeroSpace/commands#focus
+# https://nikitabobko.github.io/AeroSpace/commands#focus
 ctrl-h = 'focus left'
-ctrl-j = 'focus down'
-ctrl-k = 'focus up'
 ctrl-l = 'focus right'
 
-# See: https://nikitabobko.github.io/AeroSpace/commands#resize
-ctrl-shift-minus = 'resize smart -50'
-ctrl-shift-equal = 'resize smart +50'
+# https://nikitabobko.github.io/AeroSpace/commands#move
+ctrl-shift-h = 'move left'
+ctrl-shift-l = 'move right'
+
+# https://nikitabobko.github.io/AeroSpace/commands#resize
+ctrl-minus = 'resize smart -50'
+ctrl-equal = 'resize smart +50'
 ctrl-f = 'fullscreen'
-
-# See: https://nikitabobko.github.io/AeroSpace/commands#workspace
-ctrl-1 = 'workspace 1'
-ctrl-2 = 'workspace 2'
-ctrl-3 = 'workspace 3'
-
-# See: https://nikitabobko.github.io/AeroSpace/commands#mode
-ctrl-quote = 'mode service'
-
-# See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
-[mode.service.binding]
-esc = ['reload-config', 'mode main']
-
-h = ['layout tiles', 'move left', 'mode main']
-j = ['join-with left', 'mode main']
-k = ['join-with right', 'mode main']
-l = ['move right', 'mode main']
-
-n = ['move down', 'mode main']
-p = ['move up', 'mode main']
-
-# See: https://nikitabobko.github.io/AeroSpace/commands#move-node-to-workspace
-1 = ['move-node-to-workspace 1', 'workspace 1', 'mode main']
-2 = ['move-node-to-workspace 2', 'workspace 2', 'mode main']
-3 = ['move-node-to-workspace 3', 'workspace 3', 'mode main']
-
-quote = ['layout floating tiling', 'mode main']
