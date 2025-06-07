@@ -1,2 +1,2 @@
 [includeIf "gitdir:~/dir/"]
-	path = ~/.gitconfig.local.user
+	path = ~/.gitconfig.local.username
