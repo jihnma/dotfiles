@@ -1,0 +1,7 @@
+[user]
+	name = username
+	email = usermail
+	signingKey = ~/.ssh/ssh_username.pub
+
+[url "git@username.github.com"]
+	insteadOf = git@github.com
