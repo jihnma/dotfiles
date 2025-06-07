@@ -4,5 +4,6 @@
 
 --ignore=.stowrc
 --ignore=dot-gitconfig.local
+--ignore=dot-gitconfig.local-username
 --ignore=brew
 --ignore=brewcask
