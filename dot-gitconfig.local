@@ -1,4 +1,2 @@
-[user]
-	name = Your Name
-	email = you@example.com
-    signingKey = /Users/you/.ssh/key.pub
+[includeIf "gitdir:~/dir/"]
+	path = ~/.gitconfig.local.user
