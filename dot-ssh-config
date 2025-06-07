@@ -1,0 +1,5 @@
+Host username.github.com
+	HostName github.com
+	User git
+	IdentityFile ~/.ssh/ssh_username.pub
+	IdentitiesOnly yes
