@@ -2,8 +2,8 @@ setopt prompt_subst
 
 eval "$(/opt/homebrew/bin/brew shellenv)"
 eval "$(/opt/homebrew/bin/mise activate zsh)"
-eval "$(sheldon source)"
-eval "$(zoxide init zsh --hook prompt --cmd cd)"
+# eval "$(sheldon source)"
+# eval "$(zoxide init zsh --hook prompt --cmd cd)"
 
 # Prompt 
 local pt_icon=
