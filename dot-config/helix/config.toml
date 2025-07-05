@@ -2,11 +2,16 @@ theme = "gyaru"
 
 [editor]
 line-number = "relative"
+bufferline = "always"
 mouse = false
 popup-border = "all"
 cursorline = true
 end-of-line-diagnostics = "hint"
 color-modes = true
+
+[editor.soft-wrap]
+enable = true
+wrap-at-text-width = true
 
 [editor.inline-diagnostics]
 cursor-line = "error"
@@ -14,18 +19,19 @@ cursor-line = "error"
 [editor.statusline]
 left = [
   "mode",
-  "file-name",
-  "read-only-indicator",
-  # "file-modification-indicator",
+  "spacer",
+  "version-control",
+]
+center = [
+  "spinner",
 ]
 right = [
   "diagnostics",
-  "spinner",
-  # "selections",
-  # "position",
-  # "separator",
+  "position",
   "file-encoding",
+  "file-base-name",
 ]
+
 mode.normal = "NORMAL"
 mode.insert = "INSERT"
 mode.select = "SELECT"
@@ -47,12 +53,8 @@ space = "·"
 tab = "→"
 
 [keys.normal]
-# s = ":write"
-# f = ["file_picker_in_current_directory"]
 C-s = ":w"
-# C-r = ":config-reload"
 C-y = ["yank_to_clipboard"]
-# C-g = ":sh tmux popup -d \"#{pane_current_path}\" -xC -yC -w90% -h60% -E lazygit"
 
 [keys.insert]
 j = { k = "normal_mode" }
