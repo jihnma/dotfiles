@@ -7,78 +7,58 @@ My macOS setup for a fast and productive development environment.
 
 ## Quick Start
 
-### 1. Install Homebrew [^1]
+### 1. Install Homebrew
 
 ```sh
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-```
-
-After installation, configure your shell environment for Homebrew:
-
-```sh
 eval "$(/opt/homebrew/bin/brew shellenv)"
 ```
 
-[^1]: https://brew.sh/
-
-Then install 1Password (if you want it):
+Install 1Password if you need it:
 
 ```sh
 brew install --cask 1password
 ```
 
-### 2. Clone This Repo
+### 2. Clone this repo
 
 ```sh
-git clone https://github.com/jihnma/dotfiles.git && cd dotfiles  
+git clone https://github.com/jihnma/dotfiles.git && cd dotfiles
 ```
 
-### 3. Install brew packages
-
-Install packages:
+### 3. Install packages
 
 ```sh
 sort brew | xargs brew install
-```
-
-Install GUI apps:
-
-```sh
 sort brewcask | xargs brew install --cask
 ```
 
-### 4. Install tmux plugins
-
-Set up the tmux plugin manager for plugin management:
+### 4. Link dotfiles
 
 ```sh
-git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+stow .
 ```
 
-After installing TPM, open your tmux session, then press `prefix` + <kbd> I </kbd> (capital 'i') to install plugins defined in the `tmux.conf` file.
-
-### 5. Link Dotfiles
+To unlink:
 
 ```sh
-cd ~/dotfiles && stow .
+stow -D .
 ```
 
-## Optional Steps
+## Next Steps: Git & 1Password SSH Multi-Account
 
-### Install Rust [^2]
+Set up **multiple Git user profiles with 1Password SSH signing**
+by following this guide:
 
-If you need Rust for your projects, install it using the following command:
+> [!NOTE]
+> [Git Multi-User + 1Password SSH Signing Setup](https://gist.github.com/jihnma/0ddc2a81bbe6cb10e2708693c21e7c8d)
 
-```sh
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-```
+**What to do:**
 
-[^2]: https://rustup.rs/
+* Edit your `.gitconfig*` and `.ssh/config` as shown in the gist.
+* Use 1Password for SSH key management.
+* All required configs and copy-paste instructions are in the guide.
 
-## Remove Dotfiles
 
-To remove the dotfiles, follow these steps:  
-
-```sh
-cd ~/dotfiles && stow -D .
-```
+That’s it!
+To remove your dotfiles, run `stow -D .` again.
