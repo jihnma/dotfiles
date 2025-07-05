@@ -1,4 +1,6 @@
-[user]
-	name = Your Name
-	email = you@example.com
-    signingKey = /Users/you/.ssh/key.pub
+[includeIf "gitdir:~/dotfiles/"]
+	path = ~/.gitconfig.local-asdf
+
+[includeIf "gitdir:~/asdf/asdf/"]
+	path = ~/.gitconfig.local-asdf
+
