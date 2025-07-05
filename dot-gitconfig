@@ -1,6 +1,3 @@
-[include]
-  path = ~/.gitconfig.local
-
 [init]
 	defaultBranch = main
 
@@ -21,9 +18,3 @@
 	pl = pull
 	wp = !git add . && git commit -am "wip"
 	pr = commit --allow-empty -m "Make pull request"
-
-[commit]
-	gpgsign = true
-
-[gpg]
-	format = ssh
