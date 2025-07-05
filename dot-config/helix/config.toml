@@ -6,7 +6,6 @@ bufferline = "always"
 mouse = false
 popup-border = "all"
 cursorline = true
-end-of-line-diagnostics = "hint"
 color-modes = true
 
 [editor.soft-wrap]
