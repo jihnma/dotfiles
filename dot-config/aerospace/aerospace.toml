@@ -29,4 +29,4 @@ ctrl-shift-l = 'move right'
 # https://nikitabobko.github.io/AeroSpace/commands#resize
 ctrl-minus = 'resize smart -50'
 ctrl-equal = 'resize smart +50'
-ctrl-f = 'fullscreen'
+ctrl-enter = 'fullscreen'
