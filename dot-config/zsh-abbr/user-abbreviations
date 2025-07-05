@@ -1,20 +1,3 @@
 abbr ll="ls -goahG"
-abbr lt="npx tree-cli -l 6 --ignore 'node_modules/, .git/, .gitignore'"
-
-abbr cl="clear"
-abbr cll="clear && printf '\e[3J'"
-abbr tx="tmux -2 a || tmux -2"
-
-abbr br="brew"
-abbr bd="brew deps --tree --installed"
-abbr ya="yarn"
 abbr pn="pnpm"
-abbr gi="git"
-abbr la="lazygit"
-abbr to="touch"
-abbr so="source"
 abbr ca="cargo"
-abbr rf="rm -rf"
-abbr sp="spf -c ~/.config/superfile/config.toml"
-
-abbr mkdir="mkdir -p"
