@@ -45,6 +45,14 @@ To unlink:
 stow -D .
 ```
 
+### 5. Setup your Git local config
+
+Edit the file as needed to match your own project folder paths and user settings.
+
+```sh
+cp ~/dotfiles/dot-gitconfig.local ~/.gitconfig.local
+```
+
 ## Next Steps: Git & 1Password SSH Multi-Account
 
 Set up **multiple Git user profiles with 1Password SSH signing**
