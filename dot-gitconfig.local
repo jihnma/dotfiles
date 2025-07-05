@@ -1,6 +1,0 @@
-[includeIf "gitdir:~/dotfiles/"]
-	path = ~/.gitconfig.local-asdf
-
-[includeIf "gitdir:~/asdf/asdf/"]
-	path = ~/.gitconfig.local-asdf
-
