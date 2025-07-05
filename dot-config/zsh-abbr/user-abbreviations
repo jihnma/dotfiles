@@ -1,3 +1,4 @@
+abbr cl="clear"
 abbr ls="ls -goahG"
 abbr pn="pnpm"
 abbr ca="cargo"
