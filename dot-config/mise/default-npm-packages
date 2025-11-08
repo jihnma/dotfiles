@@ -1,7 +1,6 @@
 corepack
-typescript
 typescript-language-server
-vscode-langservers-extracted
-@biomejs/biome
-
+vscode-langservers-extracted@4.8.0
+@tailwindcss/language-server
+prettier
 pyright

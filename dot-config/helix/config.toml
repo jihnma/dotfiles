@@ -1,4 +1,4 @@
-theme = "gyaru"
+theme = "beans"
 
 [editor]
 line-number = "relative"
@@ -6,30 +6,14 @@ bufferline = "always"
 mouse = false
 popup-border = "all"
 cursorline = true
-color-modes = true
-
-[editor.soft-wrap]
-enable = true
-wrap-at-text-width = true
 
 [editor.inline-diagnostics]
 cursor-line = "error"
 
 [editor.statusline]
-left = [
-  "mode",
-  "spacer",
-  "version-control",
-]
-center = [
-  "spinner",
-]
-right = [
-  "diagnostics",
-  "position",
-  "file-encoding",
-  "file-base-name",
-]
+left = ["mode", "spacer", "version-control"]
+center = ["spinner"]
+right = ["diagnostics", "position", "file-encoding", "file-base-name"]
 
 mode.normal = "NORMAL"
 mode.insert = "INSERT"
@@ -45,15 +29,14 @@ hidden = false
 
 [editor.whitespace.render]
 tab = "all"
-space = "all"
 
 [editor.whitespace.characters]
 space = "·"
 tab = "→"
 
+# keybind
 [keys.normal]
 C-s = ":w"
-C-y = ["yank_to_clipboard"]
 
 [keys.insert]
 j = { k = "normal_mode" }

@@ -1,10 +1,10 @@
-[language-server.biome]
-command = "biome"
-args = ["lsp-proxy"]
-
-# https://github.com/helix-editor/helix/discussions/8372
-[language-server.typescript-language-server]
-required-root-patterns = ["package.json", "tsconfig.json"]
+[[language]]
+name = "toml"
+# https://github.com/tamasfe/taplo/issues/580#issuecomment-2004174721
+roots = ["."]
+auto-format = true
+formatter = { command = "taplo", args = ["fmt", "-"] }
+language-servers = ["taplo"]
 
 [[language]]
 name = "html"
@@ -15,44 +15,53 @@ name = "css"
 language-servers = ["vscode-css-language-server", "tailwindcss-ls"]
 
 [[language]]
+name = "javascript"
+language-servers = [
+  "typescript-language-server",
+  "vscode-eslint-language-server",
+]
+formatter = { command = "prettier", args = ["--parser", "meriyah"] }
+auto-format = true
+
+[[language]]
+name = "jsx"
+language-servers = [
+  "typescript-language-server",
+  "vscode-eslint-language-server",
+  "tailwindcss-ls",
+]
+formatter = { command = "prettier", args = ["--parser", "meriyah"] }
+auto-format = true
+
+[[language]]
 name = "typescript"
 language-servers = [
-  { name = "typescript-language-server", except-features = [
-    "format",
-  ] },
-  "biome",
+  "typescript-language-server",
+  "vscode-eslint-language-server",
 ]
+formatter = { command = "prettier", args = ["--parser", "typescript"] }
 auto-format = true
 
 [[language]]
 name = "tsx"
 language-servers = [
-  { name = "typescript-language-server", except-features = [
-    "format",
-  ] },
-  "biome",
-  "tailwindcss",
+  "typescript-language-server",
+  "vscode-eslint-language-server",
+  "tailwindcss-ls",
 ]
-auto-format = true
-
-[[language]]
-name = "javascript"
-language-servers = [
-  { name = "typescript-language-server", except-features = [
-    "format",
-  ] },
-  "biome",
-]
+formatter = { command = "prettier", args = ["--parser", "typescript"] }
 auto-format = true
 
 [[language]]
 name = "json"
-language-servers = ["vscode-json-language-server", "biome"]
+auto-format = true
+formatter = { command = "prettier", args = ["--parser", "json"] }
+language-servers = ["vscode-json-language-server"]
 
 [[language]]
-name = "toml"
-formatter = { command = "taplo", args = ["fmt", "-"] }
+name = "markdown"
 auto-format = true
+formatter = { command = "prettier", args = ["--parser", "markdown"] }
 
 [[language]]
 name = "python"

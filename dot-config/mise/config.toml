@@ -2,13 +2,9 @@
 node = "lts"
 bun = "latest"
 rust = { version = "latest", components = "rust-analyzer" }
-
 python = "latest"
 uv = "latest"
 ruff = "latest"
-
-[hooks]
-postinstall = "corepack enable pnpm"
 
 [env]
 MISE_NODE_DEFAULT_PACKAGES_FILE = "~/.config/mise/default-npm-packages"
