@@ -1,11 +1,20 @@
 eval "$(/opt/homebrew/bin/brew shellenv)"
 eval "$(mise activate zsh)"
 
+source "/opt/homebrew/share/zsh-abbr/zsh-abbr.zsh"
+
+source <(fzf --zsh)
+export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
+
+export CLICOLOR=1
+
 pt_icon=
 
-PROMPT="$pt_icon "
-RPROMPT="%F{8}%~%f"
+PROMPT="%(?.%F{12}.%F{yellow})$pt_icon%f "
+autoload -Uz vcs_info
+autoload -Uz add-zsh-hook && add-zsh-hook precmd vcs_info
+zstyle ':vcs_info:*' enable git
+zstyle ':vcs_info:git:*' formats ' %F{cyan}[%b]%f'
+setopt PROMPT_SUBST
 
-alias cl='clear'
-alias ls='ls -al'
-alias gprune='git fetch --prune && git branch -vv | awk "/: gone\]/ {print \$1}" | xargs -r git branch -D'
+RPROMPT='%F{8}%~%f${vcs_info_msg_0_}'
