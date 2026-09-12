@@ -1,8 +1,6 @@
 config-version = 2
 
 persistent-workspaces = ["1", "2", "3", "4"]
-on-focus-changed = ['move-mouse window-lazy-center']
-on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
 
 [gaps]
 inner.horizontal = 8
@@ -13,14 +11,14 @@ outer.top = 8
 outer.bottom = 8
 
 [mode.main.binding]
-ctrl-h = 'focus --boundaries all-monitors-outer-frame --boundaries-action stop left'
-ctrl-j = 'focus down'
-ctrl-k = 'focus up'
-ctrl-l = 'focus --boundaries all-monitors-outer-frame --boundaries-action stop right'
+ctrl-h = 'focus --boundaries all-monitors-outer-frame left'
+ctrl-j = 'focus --boundaries all-monitors-outer-frame down'
+ctrl-k = 'focus --boundaries all-monitors-outer-frame up'
+ctrl-l = 'focus --boundaries all-monitors-outer-frame right'
 
 ctrl-1 = 'workspace 1'
 ctrl-2 = 'workspace 2'
-ctrl-3 = 'summon-workspace 3' # nomad - follows me
+ctrl-3 = 'workspace 3'
 ctrl-4 = 'workspace 4'
 
 ctrl-shift-h = 'move left'
@@ -33,17 +31,18 @@ ctrl-shift-2 = 'move-node-to-workspace --focus-follows-window 2'
 ctrl-shift-3 = 'move-node-to-workspace --focus-follows-window 3'
 ctrl-shift-4 = 'move-node-to-workspace --focus-follows-window 4'
 
-ctrl-f = 'fullscreen'
-ctrl-slash = 'layout tiles accordion'
+ctrl-shift-f = 'fullscreen'
+ctrl-shift-t = 'layout tiles accordion'
+ctrl-shift-space = 'layout floating tiling'
 
 ctrl-shift-minus = 'resize smart -50'
 ctrl-shift-equal = 'resize smart +50'
+ctrl-shift-b = 'balance-sizes'
 
-ctrl-shift-w = 'join-with right'
-ctrl-shift-q = 'flatten-workspace-tree'
+ctrl-shift-g = 'join-with right'
 
 [workspace-to-monitor-force-assignment]
-2 = ['secondary', 'main']
+1 = ['secondary', 'main']
 
 [[on-window-detected]]
 if.app-id = 'com.1password.1password'
