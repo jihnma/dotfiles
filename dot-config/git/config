@@ -3,16 +3,32 @@ useConfigOnly = true
 
 [core]
 editor = hx
-excludesfile = ~/.config/ignore
 
 [init]
 defaultBranch = main
 
 [push]
-default = matching
+default = simple
 
 [pull]
 rebase = false
 
 [include]
 path = ~/.config/git/config.local
+
+[alias]
+	br = branch
+	st = status
+	co = checkout
+	pl = pull
+	sw = switch
+	sync = !git switch main && git pull --ff-only
+	flush = !git fetch --prune && git branch -vv | awk \"/: gone]/ {print \\$1}\" | xargs -I{} git branch -D {}
+
+[credential "https://github.com"]
+	helper = 
+	helper = !/opt/homebrew/bin/gh auth git-credential
+
+[credential "https://gist.github.com"]
+	helper = 
+	helper = !/opt/homebrew/bin/gh auth git-credential
