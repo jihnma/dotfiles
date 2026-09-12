@@ -1,15 +1,31 @@
-auto-update = off
+theme = light:Kanso Pearl,dark:Kanso Ink
+
 macos-titlebar-style = hidden
+macos-window-shadow = false
+window-step-resize = true
 
 window-padding-x = 16
 window-padding-y = 16
 window-padding-balance = true
+window-padding-color = extend
+
+font-size = 15
+font-family = Lyth Mono Square
+
+# Korean
+font-codepoint-map = U+AC00-U+D7A3,U+1100-U+11FF,U+3130-U+318F,U+A960-U+A97F,U+D7B0-U+D7FF=Galmuri14
+# Japanese Kana
+font-codepoint-map = U+3040-U+30FF,U+31F0-U+31FF,U+FF66-U+FF9F=murecho
+# Japanese Kanji
+font-codepoint-map = U+4E00-U+9FFF,U+3400-U+4DBF,U+F900-U+FAFF=murecho
 
 mouse-hide-while-typing = true
+bell-features = no-audio,attention,no-border
 
 keybind = ctrl+q=activate_key_table:scroll
-keybind = scroll/j=scroll_page_fractional:0.5
-keybind = scroll/k=scroll_page_fractional:-0.5
+keybind = scroll/j=scroll_page_lines:3
+keybind = scroll/k=scroll_page_lines:-3
 keybind = scroll/escape=deactivate_key_table
+keybind = scroll/q=deactivate_key_table
 
 config-file =?~/.config/ghostty/config.local
