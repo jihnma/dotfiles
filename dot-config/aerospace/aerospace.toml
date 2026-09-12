@@ -37,7 +37,6 @@ ctrl-shift-space = 'layout floating tiling'
 
 ctrl-shift-minus = 'resize smart -50'
 ctrl-shift-equal = 'resize smart +50'
-ctrl-shift-b = 'balance-sizes'
 
 ctrl-shift-g = 'join-with right'
 
