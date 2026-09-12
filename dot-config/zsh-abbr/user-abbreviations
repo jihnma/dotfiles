@@ -1,0 +1,8 @@
+abbr g="git"
+abbr cl="clear"
+abbr pn="pnpm"
+abbr ls="ls -al"
+abbr bu="brew update && brew upgrade"
+abbr buall="brew update && brew upgrade && brew upgrade --cask --greedy && brew autoremove && brew cleanup --prune=all -s && brew doctor"
+abbr ki="kill -9 $(lsof -t -i:3000)"
+abbr ca="caffeinate -dimu"
