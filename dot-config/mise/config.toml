@@ -2,10 +2,12 @@
 node = 'lts'
 pnpm = 'latest'
 rust = { version = "latest", components = "rust-analyzer" }
+python = 'latest'
+go = 'latest'
 
 [settings]
 node.default_packages_file = '~/.config/mise/default-npm-packages'
-idiomatic_version_file_enable_tools = ["node", "pnpm"]
+idiomatic_version_file_enable_tools = ["node", "pnpm", "python", "go"]
 
 [hooks]
 postinstall = 'mise prune -y'
