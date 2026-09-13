@@ -1,5 +1,8 @@
 theme = light:Kanso Pearl,dark:Kanso Ink
 
+custom-shader = ~/.config/ghostty/dim-unfocused.glsl
+custom-shader-animation = false
+
 macos-titlebar-style = hidden
 macos-window-shadow = false
 window-step-resize = true
