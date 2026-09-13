@@ -34,7 +34,3 @@ Kept out of this repo on purpose. `user.useConfigOnly = true` makes git refuse t
 ```
 
 Commits are signed with a plain SSH key, no agent. `allowed_signers` holds one `email ssh-ed25519 AAAA…` line per signer and stays local as well.
-
-## Fonts
-
-Ghostty asks for Lyth Mono Square, with Galmuri14 for Hangul and Murecho for kana and han. Only `brew install --cask font-murecho` exists; the other two are installed by hand. Missing fonts fall back silently instead of erroring.
