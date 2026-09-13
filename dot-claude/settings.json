@@ -2,11 +2,6 @@
   "permissions": {
     "allow": []
   },
-  "statusLine": {
-    "type": "command",
-    "command": "~/.claude/statusline.sh",
-    "refreshInterval": 60
-  },
   "enabledPlugins": {
     "typescript-lsp@claude-plugins-official": true,
     "playground@claude-plugins-official": true,
