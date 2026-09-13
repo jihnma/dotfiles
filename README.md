@@ -2,8 +2,6 @@
 
 macOS configs, managed with [GNU Stow](https://www.gnu.org/software/stow/).
 
-Files are named `dot-zshrc`, `dot-config/…` and land as `~/.zshrc`, `~/.config/…`. That is stow's [`--dotfiles`](https://www.gnu.org/software/stow/manual/html_node/Invoking-Stow.html) mode, set in `.stowrc` together with `--no-folding`.
-
 ## Install
 
 ```sh
